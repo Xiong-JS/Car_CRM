@@ -1,0 +1,15 @@
+{
+	"code":0,
+	"msg":"后台数据获取错误",
+	"count":7,
+	"data":[
+		{"cusNo":1,"cusName":"聂宗海","cusRegion":"华南","cusAddr":"重庆","cusUrl":"xxxxxx","cusLevel":"普通客户","cusCredit":"一级"},
+		{"cusNo":2,"cusName":"刘汪旺","cusRegion":"华南","cusAddr":"重庆","cusUrl":"xxxxxx","cusLevel":"普通客户","cusCredit":"二级"},
+		{"cusNo":3,"cusName":"熊劲松","cusRegion":"华南","cusAddr":"重庆","cusUrl":"xxxxxx","cusLevel":"普通客户","cusCredit":"一级"},
+		{"cusNo":4,"cusName":"聂宗海","cusRegion":"华南","cusAddr":"重庆","cusUrl":"xxxxxx","cusLevel":"普通客户","cusCredit":"三级"},
+		{"cusNo":5,"cusName":"聂宗海","cusRegion":"华南","cusAddr":"重庆","cusUrl":"xxxxxx","cusLevel":"普通客户","cusCredit":"一级"},
+		{"cusNo":6,"cusName":"聂宗海","cusRegion":"华南","cusAddr":"重庆","cusUrl":"xxxxxx","cusLevel":"普通客户","cusCredit":"一级"},
+		{"cusNo":7,"cusName":"聂宗海","cusRegion":"华南","cusAddr":"重庆","cusUrl":"xxxxxx","cusLevel":"普通客户","cusCredit":"五级"}
+		
+	]
+}
