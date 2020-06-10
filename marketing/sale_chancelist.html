@@ -35,6 +35,11 @@
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
           {{#}}}
+    {{# if (d.state !="0"){}}
+    <a class="layui-btn layui-btn-disabled layui-btn-xs" >指派</a>
+    <a class="layui-btn layui-btn-disabled layui-btn-xs" >编辑</a>
+    <a class="layui-btn layui-btn-disabled layui-btn-xs" >删除</a>
+        {{#}}}
     
   </script>
 
@@ -100,34 +105,34 @@
                         , content: 'marketing/sale_chanceadd.html'
                     })
                     break;
-                case 'deletecheck':
-                    //批量删除
-                    if (checkStatus.data.length <= 0) {
-                        layer.alert("请选择要删除的行");
-                        return;
-                    }
-                    layer.confirm('确认要删除选中的这行吗？', function (index) {
-                        var ids = []
-                        for (var i = 0; i < checkStatus.data.length; i++) {
-                            ids.push(checkStatus.data[i].cusNo)
-                        }
+                // case 'deletecheck':
+                //     //批量删除
+                //     if (checkStatus.data.length <= 0) {
+                //         layer.alert("请选择要删除的行");
+                //         return;
+                //     }
+                //     layer.confirm('确认要删除选中的这行吗？', function (index) {
+                //         var ids = []
+                //         for (var i = 0; i < checkStatus.data.length; i++) {
+                //             ids.push(checkStatus.data[i].cusNo)
+                //         }
 
-                        $.ajax({
-                            url: '',
-                            type: 'POST',
-                            dataType: 'JSON',
-                            data: {
-                                ids: ids.join(",")
-                            },
-                            success: function (obj) {
-                                layer.msg(obj.msg);
-                                table.reload('tabSaleChance')
-                            }
-                        })
+                //         $.ajax({
+                //             url: '',
+                //             type: 'POST',
+                //             dataType: 'JSON',
+                //             data: {
+                //                 ids: ids.join(",")
+                //             },
+                //             success: function (obj) {
+                //                 layer.msg(obj.msg);
+                //                 table.reload('tabSaleChance')
+                //             }
+                //         })
 
-                        layer.close(index);
-                    });
-                    break;
+                //         layer.close(index);
+                //     });
+                //     break;
                 case 'search':
                     //查询
                     table.reload('tabSaleChance', {
@@ -148,6 +153,7 @@
         table.on('tool(tabSaleChance)', function (obj) {
             var layEvent = obj.event;
             var data = obj.data;
+
             console.log(data)
             switch (obj.event) {
                 case 'del':
@@ -188,6 +194,7 @@
                     break;
                 case 'detail':
                     row = data
+
                     layer.open({
                         type: 2
                         , title: '查看销售机会'
@@ -200,6 +207,34 @@
                         ]
                         , content: 'marketing/sale_chancedetail.html'
                     });
+                    break;
+                case 'assgin':
+                    row = data
+
+                    $.ajax({
+                        url: './marketing/data/sale_assgin.json',
+                        type: 'GET',
+                        // dataType: 'JSON',
+                        // data: { id: id },
+                        success: function (obj) {
+                            // console.log(obj.data)
+                            assginUsers = obj.data
+                            layer.open({
+                                type: 2
+                                , title: '指派销售机会'
+                                , area: ['400px', '500px']
+                                , shade: 0.5
+                                , maxmin: true
+                                , offset: [
+                                    ($(window).height() - 500) / 2
+                                    , ($(window).width() - 400) / 2
+                                ]
+                                , content: 'marketing/sale_chanceassgin.html?'
+                            });
+                        }
+                    })
+
+
             };
         });
 
