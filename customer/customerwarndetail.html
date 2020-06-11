@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+</head>
+
+<body style="padding: 10px;">
+	<form class="layui-form" lay-filter='formWarnLost' action="">
+		<div class="layui-form-item">
+			<label class="layui-form-label">客户名称</label>
+			<div class="layui-input-block">
+				<input type="text" name="cuname" lay-verify="title" autocomplete="off" readonly="readonly" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">负责人编号</label>
+			<div class="layui-input-block">
+			  <input type="text" name="userid" lay-verify="title" autocomplete="off" readonly="readonly" class="layui-input">
+			</div>
+		  </div>
+		  <div class="layui-form-item">
+			<label class="layui-form-label">联系人编号</label>
+			<div class="layui-input-block">
+			  <input type="text" name="linkmanid" lay-verify="title" autocomplete="off"  readonly="readonly" class="layui-input">
+			</div>
+          </div>
+          <div class="layui-form-item">
+                <label class="layui-form-label">预警时间</label>
+                <div class="layui-input-block">
+                  <input type="text" name="time" lay-verify="title" autocomplete="off"  readonly="readonly" class="layui-input">
+                </div>
+           </div>
+		  <div class="layui-form-item">
+			  <label class="layui-form-label">客户状态</label>
+			  <div class="layui-input-block">
+				<select  readonly="readonly" name="state" >
+				  <option value="正常">正常</option>
+				  <option value="已流失">已流失</option>
+				</select>
+			  </div>
+            </div>
+            <div class="layui-form-item">
+                    <label class="layui-form-label">暂缓措施</label>
+                    <div class="layui-input-block">
+                      <textarea name="measure"  readonly="readonly"  class="layui-textarea"></textarea>
+                    </div>
+               </div>
+		
+            <div class="layui-form-item" id="lostReason">
+                    <label class="layui-form-label">流失原因</label>
+                    <div class="layui-input-block">
+                      <textarea name="lostReason"   readonly="readonly" class="layui-textarea"></textarea>
+                    </div>
+               </div>
+        
+            <div class="layui-form-item">
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-block">
+                      <textarea name="comment"  readonly="readonly" class="layui-textarea"></textarea>
+                    </div>
+            </div>
+	</form>
+
+	<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		layui.use(['form','jquery'], function () {
+			var form = layui.form
+			var $ = layui.jquery
+			var lostReason = document.getElementById('lostReason');
+			if(parent.row.state == 0){
+				lostReason.hidden = false
+			}else{
+				lostReason.hidden = true
+			}
+			form.render()
+			form.val('formWarnLost', {
+				"cuname":parent.row.cuname,
+				"userid":parent.row.userid,
+				"time":parent.row.time,
+				"state":parent.row.state,
+                "measure":parent.row.measure,
+                "lostReason":parent.row.lostReason,
+                "linkmanid":parent.row.linkmanid,
+                "comment":parent.row.comment
+			})
+        })
+
+	</script>
+</body>
+
+</html>

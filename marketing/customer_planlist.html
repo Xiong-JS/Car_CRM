@@ -40,18 +40,18 @@
         table.render({
             elem: '#tabPlanList'
             // , height: 550
-            , url: './marketing/data/planlist_shouye.json' //数据接口
+            , url: 'http://liuchengyin.qicp.vip/customerPlan/getCustomerPlans' //数据接口
             // , method:'POST'           //传输数据方式
             , page: true //开启分页
             , toolbar: '#barPlanList'
             , defaultToolbar: [] //去掉默认的工具栏按钮
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             // , limits: [5, 10, 15, 20]
-            // , limit: 5
+            , limit: 10
             , cols: [[ //表头
                 { field: 'customerName', title: '客户名称', width: 120, unresize: true }
                 , { field: 'telephone', title: '联系电话', width: 120, unresize: true }
-                , { field: 'chanceFrom', title: '机会来源', width: 100, unresize: true }
+                , { field: 'chanceFrom', title: '机会来源', width: 150, unresize: true }
                 , { field: 'summary', title: '概要', unresize: true } //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
                 , { field: 'description', title: '描述', unresize: true }
                 , { field: 'operate', title: '操作', unresize: true, toolbar: '#toolPlanList', width: 220, fixed: 'right', algin: 'center' }
@@ -62,12 +62,13 @@
         //监听工具栏事件
         table.on('toolbar(tabPlanList)', function (obj) {
             var checkStatus = table.checkStatus(obj.config.id);
+            console.log($('#customerName').val())
             switch (obj.event) {
                 case 'search':
                     //查询
                     table.reload('tabPlanList', {
                         where: {
-                            customerName: $('#customerName').val(),
+                            customerName: $('#customerName').val()
                         },
                         page: {
                             curr: 1 //重载过后再跳转到第一页
@@ -81,26 +82,28 @@
         table.on('tool(tabPlanList)', function (obj) {
             var layEvent = obj.event;
             var data = obj.data;
+            
             switch (obj.event) {
                 case 'detail':
                     $.ajax({
-                        url: './marketing/data/planlist_design.json',
+                        url: 'http://liuchengyin.qicp.vip/customerPlan/getPlanByChanceId',
                         type: 'GET',
                         dataType: 'JSON',
-                        data: {chanceid:data.id},
+                        data: {chanceid:data.chanceid},
                         success: function (obj) {
+                            // console.log(obj)
                             //后台成功修改后的操作
-                            row = obj.data[1]
+                            row = obj.data
                             state = data.state
-
+                            console.log(state)
                             layer.open({
                                 type: 2 //此处以iframe举例
                                 , title: '计划详情'
-                                , area: ['700px', '650px']
+                                , area: ['700px', '700px']
                                 , shade: 0.5 //背景阴影0~1
                                 , maxmin: true  //最大，最小化按钮
                                 , offset: [ //为了演示，随机坐标
-                                    ($(window).height() - 650) / 2
+                                    ($(window).height() - 700) / 2
                                     , ($(window).width() - 700) / 2
                                 ]
                                 , content: 'marketing/customer_planlistdetail.html'

@@ -3,6 +3,7 @@
 
   </table>
   <div class="layui-tab-item">
+    <div id="pageDemo"></div>
   </div>
 
 </div>
@@ -18,6 +19,12 @@
     </div>
     <a class="layui-btn layui-btn-sm "  lay-event="search">查询</a>
   </div>
+</script>
+<script type="text/html" id="tactCustomer">
+  <a class="layui-btn layui-btn-xs" lay-event="checkCon">查看联系人</a>
+</script>
+<script type="text/html" id="recordCustomer">
+  <a class="layui-btn layui-btn-xs" lay-event="checkRec">查看记录</a>
 </script>
 <script type="text/html" id="toolCustomer">
   <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
@@ -45,24 +52,35 @@
       // , limit: 5
       , cols: [[ //表头
         { checkbox: true }
-        , { field: 'cusNo', title: '客户编号', width: 120, sort: true, unresize: true }
-        , { field: 'cusName', title: '客户名称', unresize: true }
-        , { field: 'cusRegion', title: '客户区域', width: 100, unresize: true }
-        , { field: 'cusAddr', title: '客户地址', width: 250, unresize: true }
-        , { field: 'cusUrl', title: '客户网站', width: 250, unresize: true } //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-        , { field: 'cusLevel', title: '客户等级', width: 150, unresize: true }
-        , {
-          field: 'cusCredit', title: '信用等级', unresize: true, templet: function (item) {
-            switch (item.cusCredit) {
-              case '一级': return '一等';
-              case '二级': return '二等';
-              case '三级': return '三等';
-              case '四级': return '四等';
-              case '五级': return '五等';
+        , { field: 'id', title: '客户编号', width: 120, sort: true, unresize: true }
+        , { field: 'name', title: '客户名称',width: 120, unresize: true }
+        , { field: 'sex', title: '客户性别', width: 100, unresize: true }
+        , { field: 'addr', title: '客户地址', width: 250, unresize: true }
+        , { field: 'telephone', title: '客户电话', width: 200, unresize: true } //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+        , { 
+          field: 'level', title: '客户等级', width: 200, unresize: true, templet: function (item) { 
+            switch (item.level) {
+              case '战略合作伙伴': return '战略合作伙伴';
+              case '合作伙伴': return '合作伙伴';
+              case '大客户': return '大客户';
+              case '重点开发客户': return '重点开发客户';
+              case '普通客户': return '普通客户';
+              case 'VIP客户': return 'VIP客户';
               default: return '无';
             }
           }, width: 100
         }
+        , {
+          field: 'state', title: '客户状态', unresize: true, templet: function (item) {
+            switch (item.state) {
+              case 1: return '正常';
+              case 0: return '不正常';
+              default: return '无';
+            }
+          }, width: 100
+        }
+        , { field: 'cusContact', title: '客户联系人', width: 100, unresize: true, toolbar: '#tactCustomer' }
+        , { field: 'cusRecord', title: '客户交往记录', width: 120, unresize: true, toolbar: '#recordCustomer' }
         , { field: 'operate', title: '操作', unresize: true, toolbar: '#toolCustomer', width: 120, fixed: 'right' }
       ]]
       , page: true
@@ -96,7 +114,7 @@
           layer.confirm('确认要删除选中的这行吗？', function (index) {
             var ids = []
             for (var i = 0; i < checkStatus.data.length; i++) {
-              ids.push(checkStatus.data[i].cusNo)
+              ids.push(checkStatus.data[i].id)
             }
 
             $.ajax({
@@ -119,8 +137,8 @@
           //查询
           table.reload('tabCustomer', {
             where: {
-              cusName: $('#cusName').val(),
-              cusNo: $('#cusNo').val()
+              name: $('#name').val(),
+              id: $('#id').val()
             },
             page: {
               curr: 1 //重载过后再跳转到第一页
@@ -136,10 +154,10 @@
       var data = obj.data;
       switch (obj.event) {
         case 'del':
-          console.log(data.cusNo);
+          console.log(data.id);
           layer.confirm('确认要删除选中的这行吗？', function (index) {
             var id;
-            id = data.cusNo;
+            id = data.id;
             $.ajax({
               url: 'http://localhost:8080/customer/deleCustomer',
               type: 'POST',
@@ -157,7 +175,10 @@
           break;
         case 'edit':
           row = data;
-          layer.open({
+            if(row.state==''){
+              layer.confirm('无权限修改该状态的用户信息！');
+          }else{
+            layer.open({
             type: 2 //此处以iframe举例
             , title: '修改客户信息'
             , area: ['390px', '450px']
@@ -169,7 +190,83 @@
             ]
             , content: 'customer/customerupdate.html'
           });
+          }
+          
           break;
+      // };
+        case 'checkCon':
+          row = data;
+            if(row.state==''){
+              layer.confirm('无权限查看该状态用户的联系人！');
+          }else{
+            //向后台传入参数（参数为客户的id），根据客户id查询该客户的联系人并返回页面
+            var id;
+            id = data.id;
+            $.ajax({
+              url: 'http://localhost:8080/customer/checkcontact',
+              type: 'POST',
+              dataType: 'JSON',
+              data: { id: id },
+              success: function (obj) {
+                layer.msg(obj.msg);
+                layer.open({
+                type: 2 //此处以iframe举例
+                , title: '客户联系人'
+                , area: ['1000px', '600px']  //宽高
+                , shade: 0.5//阴影（0-1之间的数）
+                , maxmin: true//最大、最小化按钮
+                , offset: [ //设置窗口位置
+                ($(window).height() - 600) / 2
+                , ($(window).width() - 750) / 2
+                ]
+                , content: 'customer/checkcontact.html'
+                
+               });
+               table.reload('tabCheckContact')//重新加载客户的联系人信息
+              }
+            })
+            layer.close(index);
+        
+          }
+          
+          break;
+
+        case 'checkRec':
+          row = data;
+            if(row.state==''){
+              layer.confirm('无权限查看该状态用户的交往记录！');
+          }else{
+            //向后台传入参数（参数为客户的id），根据客户id查询该客户的交往记录并传送到到contactrecord.html页面
+            var id;
+            id = data.id;
+            $.ajax({
+              url: 'http://localhost:8080/customer/checkrecord',
+              type: 'POST',
+              dataType: 'JSON',
+              data: { id: id },
+              success: function (obj) {
+              layer.msg(obj.msg);
+              layer.open({
+                type: 2 //此处以iframe举例
+                , title: '客户来往记录'
+                , area: ['1000px', '600px']  //宽高
+                , shade: 0.5//阴影（0-1之间的数）
+                , maxmin: true//最大、最小化按钮
+                , offset: [ //设置窗口位置
+                ($(window).height() - 600) / 2
+                , ($(window).width() - 750) / 2
+                ]
+                , content: 'customer/checkrecord.html'
+               });
+               table.reload('tabCheckRecord')//重新加载客户的来往记录信息
+              }
+            })
+            layer.close(index);
+          }
+          
+          break;
+          
+          
       };
     });
 

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+</head>
+
+
+<body style="padding: 10px;">
+	<form class="layui-form" lay-filter='formUpdateCustomer' action="">
+		<input type="hidden" name="cusNo" />
+		<div class="layui-form-item">
+			<label class="layui-form-label">客户名称</label>
+			<div class="layui-input-block">
+				<input type="text" name="cusName" lay-verify="title" autocomplete="off" placeholder="请输入姓名"
+					class="layui-input">
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">服务类型</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" autocomplete="off" placeholder="类型" readonly="" name="type"
+					class="layui-input">
+			</div>
+
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">服务内容</label>
+			<div class="layui-input-block">
+				<textarea type="text" name="service_content" lay-verify="required" autocomplete="off"
+					placeholder="" class="layui-textarea"></textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+				<label class="layui-form-label">处理方法</label>
+				<div class="layui-input-block">
+					<textarea type="text" name="service_dispose" lay-verify="required" autocomplete="off"
+						placeholder="" class="layui-textarea"></textarea>
+				</div>
+			</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">创建时间</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" autocomplete="off" placeholder="时间" readonly=""
+					name="create_time" class="layui-input">
+			</div>
+		</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">分配时间</label>
+			<div class="layui-input-block">
+				<input type="text" name="allcation_time" lay-verify="title" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">创建人账户</label>
+			<div class="layui-input-block">
+				<input type="text" name="userid" lay-verify="title" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">处理人账户</label>
+			<div class="layui-input-block">
+				<input type="text" name="deal_userid" lay-verify="title" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">客户电话</label>
+			<div class="layui-input-block">
+				<input type="text" name="telephone" lay-verify="title" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+
+
+
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">满意度</label>
+			<div class="layui-input-block">
+				<input type="number" lay-verify="title" autocomplete="off" class="layui-input" value="5" readonly="" name="satisfaction">
+			</div>
+		</div>
+
+		<!-- <div class="layui-form-item">
+			<div class="layui-input-block">
+				<button type="submit" class="layui-btn" lay-submit="" lay-filter="btnSubmitUpdateCustomer">确定</button>
+			</div>
+		</div> -->
+	</form>
+
+	<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		layui.use(['form', 'jquery'], function () {
+			var form = layui.form
+			var $ = layui.jquery
+			form.render()
+			form.val('formUpdateCustomer', {
+				"type": parent.row.type,
+				"cusName": parent.row.cusName,
+				"service_content": parent.row.service_content,
+				"service_dispose": parent.row.service_dispose,
+				"create_time": parent.row.create_time,
+				"allcation_time": parent.row.allcation_time,
+				"userid": parent.row.userid,
+				"deal_userid": parent.row.deal_userid,
+				"telephone": parent.row.telephone,
+				"satisfaction": parent.row.satisfaction,
+			})
+			//表单提交事件
+			form.on('submit(btnSubmitUpdateCustomer)', function (data) {
+				$.ajax({
+					url: 'http://localhost:8080/customer/del',
+					type: 'POST',
+					dataType: 'JSON',
+					data: data.field,
+					success: function (obj) {
+						//后台成功修改后的操作
+						var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+						parent.layer.close(index); //再执行关闭   
+						parent.table.reload('tabCustomer');
+					}
+				})
+				return false;
+			})
+
+		})
+
+	</script>
+</body>
+
+</html>

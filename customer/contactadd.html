@@ -9,23 +9,23 @@
 
 <body style="padding: 10px;">
 	<!--lay-filter校验-->
-	<form class="layui-form" lay-filter='formAddCustomer' action="">
+	<form class="layui-form" lay-filter='formAddContact' action="">
 		<div class="layui-form-item">
-			<label class="layui-form-label">客户编号</label>
+			<label class="layui-form-label">联系人编号</label>
 			<div class="layui-input-block">
-				<input type="text" name="id" lay-verify="required" autocomplete="off" placeholder="请输入客户编号"
+				<input type="text" name="id" lay-verify="required" autocomplete="off" placeholder="请输入联系人编号"
 					class="layui-input">
 			</div>
 		</div>
 		<div class="layui-form-item">
-			<label class="layui-form-label">客户名称</label>
+			<label class="layui-form-label">联系人姓名</label>
 			<div class="layui-input-block">
-				<input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入客户名称"
+				<input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入联系人姓名"
 					class="layui-input">
 			</div>
 		</div>
 		<div class="layui-form-item">
-			<label class="layui-form-label">客户性别</label>
+			<label class="layui-form-label">性别</label>
 			<div class="layui-input-block">
 				<select name="sex" lay-verify="required">
 					<option value="">请选择</option>
@@ -35,44 +35,41 @@
 			</div>
 		</div>
 		<div class="layui-form-item">
-			<label class="layui-form-label">客户地址</label>
+			<label class="layui-form-label">职位</label>
 			<div class="layui-input-block">
-				<textarea name="addr" class="layui-textarea"></textarea>
+				<select name="position" lay-verify="required">
+					<option value="">请选择</option>
+					<option value="前台">前台</option>
+                    <option value="营销人员">营销人员</option>
+                    <option value="客服">客服</option>
+                    <option value="技术人员">技术人员</option>
+				</select>
 			</div>
 		</div>
 		<div class="layui-form-item">
-			<label class="layui-form-label">客户电话</label>
+			<label class="layui-form-label">办公电话</label>
 			<div class="layui-input-block">
-				<input type="text" name="telephone" lay-verify="required" autocomplete="off" placeholder="请输入客户电话"
+				<input type="text" name="telephone" lay-verify="required" autocomplete="off" placeholder="请输入办公电话"
 					class="layui-input">
 			</div>
 		</div>
 		<div class="layui-form-item">
-			<label class="layui-form-label">客户等级</label>
+			<label class="layui-form-label">手机号</label>
 			<div class="layui-input-block">
-				<select name="level" lay-verify="required">
-					<option value=""></option>
-					<option value="战略合作伙伴">战略合作伙伴</option>
-					<option value="合作伙伴">合作伙伴</option>
-					<option value="大客户">大客户</option>
-					<option value="重点开发客户">重点开发客户</option>
-					<option value="普通客户">普通客户</option>
-					<option value="VIP客户">VIP客户</option>					
-				</select>
+                <input type="text" name="phone" lay-verify="required" autocomplete="off" placeholder="请输入手机号"
+                class="layui-input">
 			</div>
 		</div>
 		<div class="layui-form-item">
-			<label class="layui-form-label">客户状态</label>
+			<label class="layui-form-label">备注信息</label>
 			<div class="layui-input-block">
-				<select name="state" lay-verify="required">
-					<option value=""></option>
-					<option value="正常">正常</option>
-				</select>
+                <input type="text" name="comment" lay-verify="required" autocomplete="off" placeholder="请备注信息"
+                class="layui-input">
 			</div>
 		</div>
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-				<button type="submit" class="layui-btn" lay-submit="" lay-filter="btnSubmitAddCustomer">立即提交</button>
+				<button type="submit" class="layui-btn" lay-submit="" lay-filter="btnSubmitAddContact">立即提交</button>
 				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 			</div>
 		</div>
@@ -84,10 +81,10 @@
 			var form = layui.form
 			var $ = layui.jquery
 			form.render()
-			form.on('submit(btnSubmitAddCustomer)', function (data) {
+			form.on('submit(btnSubmitAddContact)', function (data) {
 				if (form.verify()) {
 					$.ajax({
-						url: 'http://localhost:8080/customer/addCustomer',
+						url: 'http://localhost:8080/customer/addContact',
 						type: 'POST',
 						dataType: 'JSON',
 						data: data.field,
@@ -95,7 +92,7 @@
 							// debugger;
 							var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
 							parent.layer.close(index); //再执行关闭   
-							parent.table.reload('tabCustomer');
+							parent.table.reload('tabContact');
 						}
 					})
 					return false;

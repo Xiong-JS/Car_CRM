@@ -26,11 +26,17 @@
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script type="text/html" id="warnMeasureTool">
-    <a class="layui-btn layui-btn-xs" lay-event="defer">暂缓流失</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="define">确定流失</a>
+    <a class="layui-btn layui-btn-xs" lay-event="delaylost">暂缓流失</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="definelost">确定流失</a>
 </script>
 <script type="text/html" id="detailTool">
-    <div lay-event="examine">详情</div>
+  {{# if (d.state =="1"){}}
+  <div><a style="color:#009688">暂无</a></div>
+    {{#}}} 
+ 
+  {{# if (d.state=="0"){}}
+    <div lay-event="examine"><a style="color:#E61A1A">详情</a></div>
+    {{#}}}   
 </script>
 <script>
   var row = null
@@ -44,7 +50,7 @@
     table.render({
       elem: '#tabWarn'
       // , height: 550
-      , url: 'customer/demo.json' //数据接口
+      , url: 'customer/warnlost.json' //数据接口
       // , method:'POST'           //传输数据方式
       , page: true //开启分页
       , toolbar: '#barCustomer'
@@ -55,18 +61,18 @@
       , cols: [[ //表头
         { checkbox: true }
         , { field: 'id', align: 'center', title: '预警编号', width: 115, sort: true, unresize: true }
-        , { field: 'cuname', align: 'center', title: '客户名称', width: 115, unresize: true }
+        , { field: 'cuname', title: '客户名称', width: 115, unresize: true }
         , { field: 'userid', align: 'center', title: '负责人编号', width: 115, unresize: true }
         , { field: 'time', align: 'center', title: '预警时间', width: 180, unresize: true }
         , { field: 'state', title: '预警状态', width: 122, unresize: true ,templet:function(item){
              switch(item.state){
-                 case '已流失':return '已流失';
-                 case '正常':return '正常';
+                 case 0:return '已流失';break;
+                 case 1:return '正常';break;
                  default: return'无';
              }
         }}
         , { field: 'measureBut', align: 'center', title: '预警措施', width: 210, unresize: true,toolbar:'#warnMeasureTool'} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-        , { field: 'lost_reason', align: 'center', title: '流失原因', style:"color:#009688",width: 160, toolbar :'#detailTool', unresize: true }
+        , { field: 'lost_reason_tool', align: 'center', title: '流失原因',width: 160, toolbar :'#detailTool', unresize: true }
         , { field: 'operate', align: 'center', title: '操作', unresize: true, toolbar: '#toolCustomer', width: 230, fixed: 'right' }
       ]]
       , page: true
@@ -149,31 +155,80 @@
           row = data;
           layer.open({
             type: 2 //此处以iframe举例
-            , title: '修改客户信息'
-            , area: ['390px', '450px']
+            , title: '添加客户流失原因'
+            , area: ['380px', '400px']
             , shade: 0.5 //背景阴影0~1
             , maxmin: true  //最大，最小化按钮
             , offset: [ //为了演示，随机坐标
               ($(window).height() - 450) / 2
               , ($(window).width() - 390) / 2
             ]
-            , content: 'customer/customerupdate.html'
+            , content: 'customer/lostresonupdate.html'
           });
           break;
           case 'examine':
+          row = data;
           layer.open({
             type: 2 //此处以iframe举例
             , title: '预警详情'
-            , area: ['450px', '500px']  //宽高
+            , area: ['450px', '560px']  //宽高
+            , shade: 0.5//阴影（0-1之间的数）
+            , maxmin: true//最大、最小化按钮
+            , offset: [ //设置窗口位置
+              ($(window).height() - 600) / 2
+              , ($(window).width() - 550) / 2
+            ]
+            , content: 'customer/customerwarndetail.html'
+          })
+          break;
+          case 'delaylost':
+          row = data;
+          layer.open({
+            type: 2 //此处以iframe举例
+            , title: '暂缓流失'
+            , area: '380px' //宽
+            //自适应高度
+            , success: function(layero, index){
+              layer.iframeAuto(index)
+            }
             , shade: 0.5//阴影（0-1之间的数）
             , maxmin: true//最大、最小化按钮
             , offset: [ //设置窗口位置
               ($(window).height() - 500) / 2
               , ($(window).width() - 450) / 2
             ]
-            , content: 'customer/customeradd.html'
+            , content: 'customer/customerdelaylost.html'
           })
           break;
+          case 'definelost':
+          row=data;
+          var measure=parent.row.measure;
+          var lost_reason=parent.row.lost_reason;
+          if(measure===''){
+            layer.alert("请先进行暂缓措施处理");
+            return;
+          }
+          if(measure!=''&&lost_reason===''){
+            layer.alert("请先输入流失原因");
+            return;
+          }
+          else
+            layer.confirm('确定该客户已流失？', function (index) {
+            var id;
+            id = data.customerid;
+            $.ajax({
+              url: 'http://localhost:8080/customer/deleCustomer',
+              type: 'POST',
+              dataType: 'JSON',
+              data: { id: id },
+              success: function (obj) {
+                layer.msg(obj.msg);
+                table.reload('tabWarn')
+              }
+            })
+            layer.close(index);
+          });
+
       };
     });
 

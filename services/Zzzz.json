@@ -1,0 +1,14 @@
+{
+	"code":0,
+	"msg":"后台数据获取错误",
+	"count":7,
+	"data":[
+		{"cusNo":1,"cusName":"SSS","cusRegion":"华南","cusAddr":"重庆","cusLevel":"普通客户","cusCredit":"一级","num":"111111111","zt":"新创建"},
+		{"cusNo":2,"cusName":"DDD","cusRegion":"华南","cusAddr":"重庆","cusLevel":"普通客户","cusCredit":"二级","num":"111111111","zt":"已归档"},
+		{"cusNo":3,"cusName":"QQQ","cusRegion":"华南","cusAddr":"重庆","cusLevel":"战略合作伙伴","cusCredit":"一级","num":"111111111","zt":"已分配"},
+		{"cusNo":4,"cusName":"ZZZ","cusRegion":"华南","cusAddr":"重庆","cusLevel":"VIP客户","cusCredit":"三级","num":"111111111","zt":"已分配"},
+		{"cusNo":5,"cusName":"AAA","cusRegion":"华南","cusAddr":"重庆","cusLevel":"普通客户","cusCredit":"一级","num":"111111111","zt":"已处理"},
+		{"cusNo":6,"cusName":"VVV","cusRegion":"华南","cusAddr":"重庆","cusLevel":"大客户","cusCredit":"一级","num":"111111111","zt":"新创建"}
+		
+	]
+}

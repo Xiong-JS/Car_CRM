@@ -30,12 +30,12 @@
 <!-- 表格行 -->
 <script type="text/html" id="toolSaleChance">
     <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
-    {{# if (d.state =="0"){}}
+    {{# if (d.state =="1"){}}
     <a class="layui-btn layui-btn-xs" lay-event="assgin">指派</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
           {{#}}}
-    {{# if (d.state !="0"){}}
+    {{# if (d.state !="1"){}}
     <a class="layui-btn layui-btn-disabled layui-btn-xs" >指派</a>
     <a class="layui-btn layui-btn-disabled layui-btn-xs" >编辑</a>
     <a class="layui-btn layui-btn-disabled layui-btn-xs" >删除</a>
@@ -54,29 +54,29 @@
         table.render({
             elem: '#tabSaleChance'
             // , height: 550
-            , url: './marketing/data/sale_chance.json' //数据接口
+            , url: 'http://liuchengyin.qicp.vip/saleChance/' //数据接口
             // , method:'POST'           //传输数据方式
             , page: true //开启分页
             , toolbar: '#barSaleChance'
             , defaultToolbar: [] //去掉默认的工具栏按钮
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
-            // , limits: [5, 10, 15, 20]
-            // , limit: 5
+            , limits: [5, 10, 15, 20]
+            , limit: 10
             , cols: [[ //表头
                 { field: 'customerName', title: '客户名称', width: 120, unresize: true }
-                , { field: 'chanceFrom', title: '机会来源', width: 100, unresize: true }
+                , { field: 'chanceFrom', title: '机会来源', width: 150, unresize: true }
                 , { field: 'telephone', title: '联系电话', width: 120, unresize: true }
                 , { field: 'successRate', title: '成功几率%', width: 100, unresize: true }
-                , { field: 'summary', title: '概要', unresize: true } //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                , { field: 'summary', title: '概要', height: 50, unresize: true } //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
                 , { field: 'createUsername', title: '创建人', width: 80, unresize: true }
                 , { field: 'username', title: '指派给', width: 100, unresize: true }
                 , {
                     field: 'state', title: '机会状态', unresize: true, templet: function (item) {
                         switch (item.state) {
-                            case 0: return '未分配';
-                            case 1: return '已分配';
-                            case 2: return '开发成功';
-                            case 3: return '开发失败';
+                            case 1: return '未分配';
+                            case 2: return '已分配';
+                            case 3: return '开发成功';
+                            case 4: return '开发失败';
                             default: return '无';
                         }
                     }, width: 100
@@ -135,10 +135,11 @@
                 //     break;
                 case 'search':
                     //查询
+                    console.log($('#State').val())
                     table.reload('tabSaleChance', {
                         where: {
                             customerName: $('#customerName').val(),
-                            State: $('#State').val()
+                            state: $('#State').val()
                         },
                         page: {
                             curr: 1 //重载过后再跳转到第一页
@@ -154,24 +155,22 @@
             var layEvent = obj.event;
             var data = obj.data;
 
-            console.log(data)
             switch (obj.event) {
                 case 'del':
-                    console.log(data.cusNo);
                     layer.confirm('确认要删除选中的这行吗？', function (index) {
                         var id;
                         id = data.id;
                         $.ajax({
-                            url: 'http://localhost:8080/customer/deleCustomer',
-                            type: 'POST',
+                            url: 'http://liuchengyin.qicp.vip/saleChance/deleteSaleChance',
+                            type: 'DELETE',
                             dataType: 'JSON',
                             data: { id: id },
                             success: function (obj) {
                                 layer.msg(obj.msg);
+                                console.log('hh')
                                 table.reload('tabSaleChance')
                             }
                         })
-
                         layer.close(index);
                     });
 

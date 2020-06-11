@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+</head>
+
+<body style="padding: 10px;">
+	<form class="layui-form" lay-filter='formUpdateContactRecord' action="">
+		<input type="hidden" name="conID" />
+		<div class="layui-form-item">
+			<label class="layui-form-label">事件日期</label>
+			<div class="layui-input-block">
+				<input type="text" name="time" lay-verify="title" autocomplete="off" placeholder="请输入事件日期"
+					class="layui-input">
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">事件地点</label>
+			<div class="layui-input-block">
+				<textarea name="place" class="layui-textarea"></textarea>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">事件概要</label>
+			<div class="layui-input-block">
+				<textarea name="schema" class="layui-textarea"></textarea>
+			</div>
+		  </div>
+		  <div class="layui-form-item">
+			<label class="layui-form-label">详细信息</label>
+			<div class="layui-input-block">
+				<textarea name="detail" class="layui-textarea"></textarea>
+			</div>
+		  </div>
+		  <div class="layui-form-item">
+			  <label class="layui-form-label">备注信息</label>
+			  <div class="layui-input-block">
+				<textarea name="comment" class="layui-textarea"></textarea>
+			  </div>
+			</div>
+			
+
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button type="submit" class="layui-btn" lay-submit="" lay-filter="btnSubmitUpdateContactRecord">立即提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+	</form>
+
+	<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		layui.use(['form','jquery'], function () {
+			var form = layui.form
+			var $ = layui.jquery
+			form.render()
+			form.val('formUpdateContactRecord', {
+				"time":parent.row.time,
+				"place":parent.row.place,
+				"schema":parent.row.schema,
+				"detail":parent.row.detail,
+				"comment":parent.row.comment,
+			
+			})
+
+			//表单提交事件
+			form.on('submit(btnSubmitUpdateContact)',function(data){
+				$.ajax({
+					url:'http://localhost:8080/customer/updateContactRecord',
+					type:'POST',
+					dataType:'JSON',
+					data:data.field,
+					success:function(obj){
+						//后台成功修改后的操作
+						var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+						parent.layer.close(index); //再执行关闭   
+						parent.table.reload('tabContactRecord');
+					}
+				})
+				return false;
+			})
+
+		})
+
+	</script>
+</body>
+
+</html>

@@ -5,6 +5,7 @@
     "data": [
         {
             "id": 1,
+            "chanceid":3,
             "customerName": "诸葛亮",
             "chanceFrom": "线下找人",
             "telephone": "13484611254",
@@ -15,12 +16,53 @@
         },
         {
             "id": 2,
+            "chanceid":6,
             "customerName": "诸葛亮",
             "chanceFrom": "线下找人",
             "telephone": "13484611254",
             "summary": "哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈",
             "description": "老客户",
             "state":3,
+            "makeState": 1
+        },{
+            "id": 3,
+            "chanceid":7,
+            "customerName": "张飞",
+            "chanceFrom": "线下找人",
+            "telephone": "12345678910",
+            "summary": "哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈",
+            "description": "老客户",
+            "state":1,
+            "makeState": 1
+        },{
+            "id": 4,
+            "chanceid":8,
+            "customerName": "刘备",
+            "chanceFrom": "线下找人",
+            "telephone": "12345678910",
+            "summary": "哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈",
+            "description": "老客户",
+            "state":1,
+            "makeState": 1
+        },{
+            "id": 4,
+            "chanceid":23,
+            "customerName": "刘备",
+            "chanceFrom": "线下找人",
+            "telephone": "12345678910",
+            "summary": "哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈",
+            "description": "老客户",
+            "state":1,
+            "makeState": 1
+        },{
+            "id": 4,
+            "chanceid":9,
+            "customerName": "刘备",
+            "chanceFrom": "线下找人",
+            "telephone": "12345678910",
+            "summary": "哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈",
+            "description": "老客户",
+            "state":1,
             "makeState": 1
         }
     ]

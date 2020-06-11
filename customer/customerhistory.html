@@ -62,7 +62,7 @@
                   }
           } 
         } //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-          , { field: 'comment', title: '备注', width:250, unresize: true }
+          , { field: 'comment', title: '备注', width:248, unresize: true }
           , { field: 'operate', align: 'center', title: '操作', unresize: true, toolbar: '#toolCustomer', width: 170, fixed: 'right' }
         ]]
         , page: true
@@ -142,21 +142,6 @@
             });
   
             break;
-        //   case 'examine':
-        //     row = data;
-        //     layer.open({
-        //       type: 2 //此处以iframe举例
-        //       , title: '修改客户信息'
-        //       , area: ['390px', '450px']
-        //       , shade: 0.5 //背景阴影0~1
-        //       , maxmin: true  //最大，最小化按钮
-        //       , offset: [ //为了演示，随机坐标
-        //         ($(window).height() - 450) / 2
-        //         , ($(window).width() - 390) / 2
-        //       ]
-        //       , content: 'customer/customerupdate.html'
-        //     });
-        //     break;
         };
       });
   

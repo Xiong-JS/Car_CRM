@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+</head>
+
+
+<body style="padding: 10px;">
+	<form class="layui-form" lay-filter='formUpdateCustomer' action="">
+		<input type="hidden" name="cusNo" />
+
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">客户id</label>
+			<div class="layui-input-block">
+				<input class="layui-input" autocomplete="off" lay-verify="title" type="text" name="customer_id" />
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">客户名称</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="title" autocomplete="off" placeholder="请输入姓名" class="layui-input" name="cusName">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">处理人账户</label>
+			<div class="layui-input-block">
+				<input class="layui-input" autocomplete="off" lay-verify="title" type="text" name="deal_userid" />
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">服务类型</label>
+			<div class="layui-input-block">
+					<input class="layui-input" autocomplete="off" lay-verify="title" type="text" name="state" disabled/>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button type="submit" class="layui-btn" lay-submit="" lay-filter="btnSubmitUpdateCustomer">立即提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+	</form>
+
+	<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		layui.use(['form', 'jquery'], function () {
+			var form = layui.form
+			var $ = layui.jquery
+			form.render()
+			form.val('formUpdateCustomer', {
+				"cusName": parent.row.cusName,
+				"customer_id": parent.row.customer_id,
+				"state": parent.row.state,
+				"deal_userid": parent.row.deal_userid,
+			})
+
+			//表单提交事件
+			form.on('submit(btnSubmitUpdateCustomer)', function (data) {
+				$.ajax({
+					url: 'http://localhost:8080/customer/fenpei',
+					type: 'POST',
+					dataType: 'JSON',
+					data: data.field,
+					success: function (obj) {
+						//后台成功修改后的操作
+						var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+						parent.layer.close(index); //再执行关闭   
+						parent.table.reload('tabCustomer');
+					}
+				})
+				return false;
+			})
+
+		})
+
+	</script>
+</body>
+
+</html>

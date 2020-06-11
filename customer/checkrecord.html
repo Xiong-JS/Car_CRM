@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+</head>
+
+<body style="padding: 10px;">
+    <table id="tabCheckRecord" lay-filter="tabCheckRecord"></table>
+	<!--lay-filter校验-->
+      <script type="text/html" id="toolCheckRecord">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+      </script>
+      <script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+      <script>
+        var row = null
+        var table = null  //定义全局变量方便修改操作时访问
+        layui.use(['table', 'jquery', 'laypage'], function () {
+          table = layui.table;
+          var $ = layui.jquery;
+          var laypage = layui.layer;
+      
+          table.render({
+          elem: '#tabCheckRecord'
+          , url: 'contactrecord.json' //数据接口
+          // , method:'POST'           //传输数据方式
+          , page: true //开启分页
+          , toolbar: '#barCheckRecord'
+          , defaultToolbar: [] //去掉默认的工具栏按钮
+          , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+          // , limits: [5, 10, 15, 20]
+          // , limit: 5
+          , cols: [[ //表头
+          { checkbox: true }
+          , { field: 'id', title: '记录编号', width: 100,sort: true, unresize: true }
+          , { field: 'customerid', title: '客户编号', width: 100, unresize: true }
+          , { field: 'time', title: '事件日期', width: 150,  unresize: true }
+          , { field: 'place', title: '事件地点', unresize: true }
+          , { field: 'schema', title: '事件概要', width: 150, unresize: true }
+          , { field: 'detail', title: '详细信息', width: 250, unresize: true }
+          , { field: 'comment', title: '备注信息', width: 150, unresize: true } //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+          , { field: 'operate', title: '操作', unresize: true, toolbar: '#toolCheckRecord', width: 120, fixed: 'right' }
+          ]]
+          , page: true
+          });
+
+
+            //监听行事件
+            table.on('tool(tabCheckRecord)', function (obj) {
+            var layEvent = obj.event;
+            var data = obj.data;
+            switch (obj.event) {
+                case 'del':
+                console.log(data.cusNo);
+                layer.confirm('确认要删除选中的这行吗？', function (index) {
+                    var id;
+                    id = data.cusNo;
+                    $.ajax({
+                    url: 'http://localhost:8080/customer/deleContactRecord',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: { id: id },
+                    success: function (obj) {
+                        layer.msg(obj.msg);
+                        table.reload('tabChecktRecord')
+                    }
+                    })
+
+                    layer.close(index);
+                });
+
+                break;
+                case 'edit':
+                row = data;
+                layer.open({
+                    type: 2 //此处以iframe举例
+                    , title: '修改客户交往记录'
+                    , area: ['390px', '450px']
+                    , shade: 0.5 //背景阴影0~1
+                    , maxmin: true  //最大，最小化按钮
+                    , offset: [ //为了演示，随机坐标
+                    ($(window).height() - 450) / 2
+                    , ($(window).width() - 390) / 2
+                    ]
+                    , content: 'customer/contactrecordupdate.html'
+                });
+                break;
+            };
+            });
+          
+        });
+    </script>
+
+
+</body>
+</html>

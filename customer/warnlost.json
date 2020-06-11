@@ -1,0 +1,15 @@
+{
+	"code":0,
+	"msg":"后台数据获取错误",
+	"count":7,
+	"data":[
+        {"wlNo":1,"id":"w0001","cuname":"后羿","userid":"A01","linkmanid":"A101","time":"2020-05-01","state":1,"measure":"","lostReason":"","comment":"服务态度有待提升"},
+        {"wlNo":2,"id":"w0002","cuname":"嫦娥","userid":"A03","linkmanid":"A302","time":"2020-05-02","state":0,"measure":"先联系客户，询问其对产品的意见","lostReason":"未流失","comment":"服务态度有待提升"},
+        {"wlNo":3,"id":"w0003","cuname":"小乔","userid":"A03","linkmanid":"A302","time":"2020-05-11","state":1,"measure":"先联系客户，询问其对产品的意见","lostReason":"","comment":"服务态度有待提升"},
+        {"wlNo":4,"id":"w0004","cuname":"上官","userid":"A04","linkmanid":"A403","time":"2020-06-12","state":1,"measure":"先联系客户，询问其对产品的意见","lostReason":"未流失","comment":"服务态度有待提升"},
+        {"wlNo":5,"id":"w0005","cuname":"王昭君","userid":"A03","linkmanid":"A302","time":"2020-06-04","state":1,"measure":"先联系客户，询问其对产品的意见","lostReason":"未流失","comment":"服务态度有待提升"},
+        {"wlNo":6,"id":"w0006","cuname":"安琪拉","userid":"A02","linkmanid":"A201","time":"2020-06-05","state":1,"measure":"先联系客户，询问其对产品的意见","lostReason":"未流失","comment":"服务态度有待提升"},
+        {"wlNo":7,"id":"w0007","cuname":"妲己","userid":"A02","linkmanid":"A202","time":"2020-07-01","state":1,"measure":"先联系客户，询问其对产品的意见","lostReason":"未流失","comment":"服务态度有待提升"}
+		
+	]
+}

@@ -133,6 +133,7 @@
                 $("#username").append("<option value=" + parent.assginUsers[i].nickname+','+parent.assginUsers[i].id + ">" + parent.assginUsers[i].nickname + "</option>");
             }
             //每次动态添加下拉框都要重新手动渲染一次
+            console.log(parent.row.createTime)
             form.val('formDetailSaleChance', {
                 // "id": parent.row.id,
                 // "customerId": parent.row.customerId,
@@ -159,7 +160,7 @@
                 var userid = user[1];
                 var username = user[0];
                 $.ajax({
-                    url: './marketing/data/sale.assgin.json',
+                    url: 'http://liuchengyin.qicp.vip/saleChance/assignedChance',
                     type: 'POST',
                     dataType: 'JSON',
                     data: {

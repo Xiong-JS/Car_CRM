@@ -55,7 +55,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">客户登记</label>
             <div class="layui-input-block">
-                <select name="state" lay-verify="required">
+                <select name="level" lay-verify="required">
                     <option value="普通客户">普通客户</option>
                     <option value="战略合作伙伴">战略合作伙伴</option>
                     <option value="合作伙伴">合作伙伴</option>
@@ -119,19 +119,20 @@
             var $ = layui.jquery
             form.render()
             form.on('submit(btnSubmitAddSaleChance)', function (data) {
-                console.log(date)
                 if (form.verify()) {
                     console.log(data)
                     $.ajax({
-                        url: 'http://localhost:8080/customer/addCustomer',
+                        url: 'http://liuchengyin.qicp.vip/saleChance/addSaleChance',
                         type: 'POST',
                         dataType: 'JSON',
-                        data: data.field,
+                        contentType:"application/json",
+                        data: JSON.stringify(data.field),
                         success: function (obj) {
                             // debugger;
                             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            layer.msg(obj.msg);
                             parent.layer.close(index); //再执行关闭   
-                            parent.table.reload('tabCustomer');
+                            parent.table.reload('tabSaleChance');
                         }
                     })
                     return false;

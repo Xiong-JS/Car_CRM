@@ -13,21 +13,18 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">客户名称</label>
 			<div class="layui-input-block">
-				<input type="text" name="cusName" lay-verify="title" autocomplete="off" placeholder="请输入姓名"
+				<input type="text" name="name" lay-verify="title" autocomplete="off" placeholder="请输入客户姓名"
 					class="layui-input">
 			</div>
 		</div>
 
 		<div class="layui-form-item">
-			<label class="layui-form-label">客户区域</label>
+			<label class="layui-form-label">客户性别</label>
 			<div class="layui-input-block">
-				<select name="cusRegion" lay-filter="aihao">
+				<select name="sex" lay-filter="aihao">
 					<option value=""></option>
-					<option value="华北">华北</option>
-					<option value="西北">西北</option>
-					<option value="华中">华中</option>
-					<option value="华南">华南</option>
-					<option value="西南">西南</option>
+					<option value="男">男</option>
+					<option value="女">女</option>
 				</select>
 			</div>
 		</div>
@@ -35,41 +32,30 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">客户地址</label>
 			<div class="layui-input-block">
-			  <input type="text" name="cusAddr" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+				<textarea name="addr" class="layui-textarea"></textarea>
 			</div>
 		  </div>
 		  <div class="layui-form-item">
-			<label class="layui-form-label">客户网址</label>
+			<label class="layui-form-label">客户电话</label>
 			<div class="layui-input-block">
-			  <input type="text" name="cusUrl" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+			  <input type="text" name="telephone" lay-verify="title" autocomplete="off" placeholder="请输入客户电话" class="layui-input">
 			</div>
 		  </div>
 		  <div class="layui-form-item">
 			  <label class="layui-form-label">客户等级</label>
 			  <div class="layui-input-block">
-				<select name="cusLevel" >
-				  <option value=""></option>
-				  <option value="战略合作伙伴">战略合作伙伴</option>
-				  <option value="VIP客户">VIP客户</option>
-				  <option value="大客户">大客户</option>
-				  <option value="普通客户">普通客户</option>
+				<select name="level" >
+					<option value=""></option>
+					<option value="战略合作伙伴">战略合作伙伴</option>
+					<option value="合作伙伴">合作伙伴</option>
+					<option value="大客户">大客户</option>
+					<option value="重点开发客户">重点开发客户</option>
+					<option value="普通客户">普通客户</option>
+					<option value="VIP客户">VIP客户</option>
 				</select>
 			  </div>
 			</div>
-			<div class="layui-form-item">
-				<label class="layui-form-label">信用等级</label>
-				<div class="layui-input-block">
-				  <select name="cusCredit" >
-					<option value=""></option>
-					<option value="一级">一级</option>
-					<option value="二级">二级</option>
-					<option value="三级">三级</option>
-					<option value="四级">四级</option>
-				  <option value="五级">五级</option>
-				  </select>
-				</div>
-			  </div>
-
+			
 		<div class="layui-form-item">
 			<div class="layui-input-block">
 				<button type="submit" class="layui-btn" lay-submit="" lay-filter="btnSubmitUpdateCustomer">立即提交</button>
@@ -85,13 +71,11 @@
 			var $ = layui.jquery
 			form.render()
 			form.val('formUpdateCustomer', {
-				"cusNo":parent.row.cusNo,
-				"cusName":parent.row.cusName,
-				"cusAddr":parent.row.cusAddr,
-				"cusRegion":parent.row.cusRegion,
-				"cusUrl":parent.row.cusUrl,
-				"cusLevel":parent.row.cusLevel,
-				"cusCredit":parent.row.cusCredit,
+				"name":parent.row.name,
+				"sex":parent.row.sex,
+				"addr":parent.row.addr,
+				"telephone":parent.row.telephone,
+				"level":parent.row.level,
 			})
 
 			//表单提交事件

@@ -10,8 +10,9 @@
 <body style="padding: 10px;">
     <form class="layui-form" lay-filter='formPlanListDetail' action="">
         <!-- 机会id -->
-        <input type="hidden" name="id" />
-        <input type="hidden" name="userid" />
+        <input type="hidden" name="chanceid" />
+        <input type="hidden" name="state" />
+        <!-- <input type="hidden" name="userid" /> -->
         <div class="layui-form-item">
             <label class="layui-form-label">计划前期</label>
             <div class="layui-input-block">
@@ -40,28 +41,33 @@
                 </div>
             </div>
         </div>
+
         <div class="layui-form-item" style="margin-top: 50px;">
-            <div class="layui-progress" lay-filter="planProgress" lay-showPercent="yes">
-                <div class="layui-progress-bar layui-bg-red" lay-percent="30%"></div>
+            <label class="layui-form-label">计划进度</label>
+            <div class="layui-input-block" >
+                <div class="layui-progress" lay-filter="planProgress" lay-showPercent="yes" >
+                    <div class="layui-progress-bar layui-bg-red" lay-percent="30%"></div>
+                </div>
             </div>
-        </div>
+          </div>
+
         <input type="hidden" name="progress" />
 
         <div id="executing" class="layui-form-item" style="margin-top: 50px;">
-            <div class="layui-input-block" >
+            <div class="layui-input-block">
                 <button type="submit" class="layui-btn" lay-submit="" lay-filter="btnSubmitSave">保存</button>
                 <button type="submit" class="layui-btn" lay-submit="" lay-filter="btnSubmitSuccess">开发成功</button>
-                <button type="submit" class="layui-btn" lay-submit="" lay-filter="btnSubmitFailed">开发失败</button>
+                <button type="submit" class="layui-btn layui-btn-danger" lay-submit="" lay-filter="btnSubmitFailed">开发失败</button>
             </div>
         </div>
-        <div id="executfailed" class="layui-form-item" style="margin-top: 50px;margin-left: 200px;">
+        <div id="executfailed" class="layui-form-item" style="margin-top: 50px;margin-left: 180px;">
             <div class="layui-input-block">
-                <a class="layui-btn  layui-btn-disabled">开发失败</a>
+                <div class="layui-btn  layui-btn-danger">开发失败</div>
             </div>
         </div>
-        <div id="executsuccess" class="layui-form-item" style="margin-top: 50px;margin-left: 200px;">
+        <div id="executsuccess" class="layui-form-item" style="margin-top: 50px;margin-left: 180px;">
             <div class="layui-input-block">
-                <a class="layui-btn  layui-btn-normal">开发成功</a>
+                <div class="layui-btn  layui-btn-normal">开发成功</div>
             </div>
         </div>
     </form>
@@ -76,7 +82,7 @@
 
             form.render()
             form.val('formPlanListDetail', {
-                "id": parent.row.id,
+                "chanceid": parent.row.chanceid,
                 "content1": parent.row.content1,
                 "content2": parent.row.content2,
                 "content3": parent.row.content3
@@ -126,16 +132,16 @@
                 element.init()
                 element.progress('planProgress', '3/3')
             }
-            // 1表示已指定
-            if (parent.state == 1) {
+            // 2表示已指定
+            if (parent.state == 2) {
                 executing.hidden = false
                 executsuccess.hidden = true
                 executfailed.hidden = true
-            }else if(parent.state == 2){//2开发成功
+            } else if (parent.state == 3) {//3开发成功
                 executing.hidden = true
                 executsuccess.hidden = false
                 executfailed.hidden = true
-            }else{//3开发失败
+            } else if(parent.state == 4) {//4开发失败
                 executing.hidden = true
                 executsuccess.hidden = true
                 executfailed.hidden = false
@@ -143,13 +149,17 @@
 
             //表单保存提交事件
             form.on('submit(btnSubmitSave)', function (data) {
-                document.getElementsByName('progress').value = parent.row.progress
-                console.log(document.getElementsByName('progress').value)
+                // document.getElementsByName('progress').value = parent.row.progress
+                // console.log(document.getElementsByName('progress').value)
+                // console.log(data.field)
+                data.field.progress = parent.row.progress
+                console.log(data.field)
                 $.ajax({
-                    url: 'http://localhost:8080/customer/updateCustomer',
+                    url: 'http://liuchengyin.qicp.vip/customerPlan/makePlan',
                     type: 'POST',
                     dataType: 'JSON',
-                    data: data.field,
+                    contentType:"application/json",
+                    data: JSON.stringify(data.field),
                     success: function (obj) {
                         //后台成功修改后的操作
                         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
@@ -161,13 +171,16 @@
             })
             //表单开发成功提交事件
             form.on('submit(btnSubmitSuccess)', function (data) {
-                document.getElementsByName('progress').value = parent.row.progress
-                console.log(document.getElementsByName('progress').value)
+              
+                data.field.progress = parent.row.progress
+                data.field.state = 3
+                console.log(data.field)
                 $.ajax({
-                    url: 'http://localhost:8080/customer/updateCustomer',
-                    type: 'POST',
+                    url: 'http://liuchengyin.qicp.vip/customerPlan/developmentResult',
+                    type: 'PUT',
                     dataType: 'JSON',
-                    data: data.field,
+                    contentType:"application/json",
+                    data: JSON.stringify(data.field),
                     success: function (obj) {
                         //后台成功修改后的操作
                         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
@@ -180,12 +193,14 @@
             //表单开发失败提交事件
             form.on('submit(btnSubmitFailed)', function (data) {
                 document.getElementsByName('progress').value = parent.row.progress
-                console.log(document.getElementsByName('progress').value)
+                data.field.progress = parent.row.progress
+                data.field.state = 4
                 $.ajax({
-                    url: 'http://localhost:8080/customer/updateCustomer',
-                    type: 'POST',
+                    url: 'http://liuchengyin.qicp.vip/customerPlan/developmentResult',
+                    type: 'PUT',
                     dataType: 'JSON',
-                    data: data.field,
+                    contentType:"application/json",
+                    data: JSON.stringify(data.field),
                     success: function (obj) {
                         //后台成功修改后的操作
                         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引

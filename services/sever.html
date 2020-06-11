@@ -1,0 +1,289 @@
+<style>
+  .a {
+    height: 22px;
+    line-height: 22px;
+    padding: 0 5px;
+    font-size: 12px;
+    margin-left: 20px;
+  }
+
+  .c {
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    font-size: 12px
+  }
+</style>
+<div>
+  <table id="tabCustomer" lay-filter="tabCustomer">
+
+  </table>
+  <div class="layui-tab-item">
+    <div id="pageDemo"></div>
+  </div>
+
+</div>
+<script type="text/html" id="barCustomer">
+  <a class="layui-btn c "  lay-event="add">添加</a>
+<div class="layui-input-inline" style="margin-left:200px">
+      <div class="layui-input-inline">
+      <input type="text" id="cusName" lay-verify="title" autocomplete="off" placeholder="客户名称" class="layui-input">
+    </div>
+    <div class="layui-input-inline">
+    <input type="text" id="cusNo" lay-verify="title" autocomplete="off" placeholder="客户编号" class="layui-input">
+    </div>
+    <a class="layui-btn c "  lay-event="search">查询</a>
+  </div>
+</script>
+<script type="text/html" id="toolCustomer">
+
+  {{# if (d.zt =="已分配" || d.zt =="已处理" || d.zt =="已归档"|| d.zt =="已反馈"){}}
+  <a class="layui-btn a layui-btn-disabled"  >分配</a>
+  {{#}}}
+
+  {{# if (d.zt =="新创建"){}}
+  <a class="layui-btn a " lay-event="edit" >分配</a>
+  {{#}}}
+
+  {{# if (d.zt=="已处理" || d.zt =="已反馈" || d.zt =="已归档" ||d.zt=="新创建"){}}
+  <a class="layui-btn  a layui-btn-disabled" >处理</a>
+  {{#}}}
+
+  {{# if (d.zt =="已分配"){}}
+  <a class="layui-btn  a" lay-event="deal">处理</a>
+  {{#}}}
+
+  {{# if ( d.zt == "已反馈"|| d.zt =="已归档" ||d.zt=="新创建"||d.zt =="已分配"){}}
+  <a class="layui-btn b a layui-btn-disabled" >反馈</a>
+  {{#}}}
+
+  {{# if (d.zt == "已处理"){}}
+  <a class="layui-btn b a" lay-event="spon">反馈</a>
+  {{#}}} 
+  
+  <a class="layui-btn b a" lay-event="del">查看</a>
+  
+</script>
+<script>
+</script>
+<script>
+  //JavaScript代码区域
+  layui.use(['element', 'jquery'], function () {
+    var element = layui.element;
+    var $ = layui.jquery
+    //给菜单添加单击事件
+    $('.crm-menu').click(function () {
+      //jQuery的ajax异步请求，第一个参数是请求的页面；
+      //第二个参数是提交数据；第三个参数是请求成功的回调函数
+      $.get($(this).attr('crmurl'), null, function (obj) {
+        //把请求的页面填充到内容区域
+        $('.layui-body').children(0).html(obj)
+      })
+    })
+  });
+</script>
+
+<script>
+  //JavaScript代码区域
+  layui.use(['element', 'jquery'], function () {
+    var element = layui.element;
+    var $ = layui.jquery
+    //给菜单添加单击事件
+    $('.crm-menu').click(function () {
+      //jQuery的ajax异步请求，第一个参数是请求的页面；
+      //第二个参数是提交数据；第三个参数是请求成功的回调函数
+      $.get($(this).attr('crmurl'), null, function (obj) {
+        //把请求的页面填充到内容区域
+        $('.layui-body').children(0).html(obj)
+      })
+    })
+  });
+</script>
+
+<script>
+  var row = null
+  var table = null  //定义全局变量方便修改操作时访问
+  layui.use(['table', 'jquery', 'laypage'], function () {
+    table = layui.table;
+    var $ = layui.jquery;
+    var laypage = layui.layer;
+
+    //第一个实例
+    table.render({
+      elem: '#tabCustomer'
+      // , height: 550
+      , url: 'http://liuchengyin.qicp.vip/api/v1/services' //数据接口
+      // , method:'POST'           //传输数据方式
+      , page: true //开启分页
+      , toolbar: '#barCustomer'
+      , defaultToolbar: [] //去掉默认的工具栏按钮
+      , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+      // , limits: [5, 10, 15, 20]
+      // , limit: 5
+      , cols: [[ //表头
+
+        { field: 'id', title: '服务编号', width: 130, sort: true, unresize: true }
+        , { field: 'cusName', title: '客户名称', width: 100 }
+        , { field: 'telephone', title: '客户电话', unresize: true }
+        , { field: 'serviceContent', title: '服务内容', width: 160, unresize: true }
+        , { field: 'createTime', title: '创建时间', width: 150, unresize: true }
+        , { field: 'state', title: '状态', width: 160, unresize: true }
+        , {
+          field: 'type', title: '服务类型', width: 210, unresize: true, templet: function (item) {
+            switch (item.type) {
+              case '1': return '咨询';
+              case '3': return '建议';
+              case '2': return '投诉';
+              default: return '无';
+            }
+          }, width: 100
+        }
+        , { field: 'operate', title: '操作', unresize: true, toolbar: '#toolCustomer', width: 250, fixed: 'right' }
+      ]]
+      , page: true
+    });
+
+
+    //监听工具栏事件
+    table.on('toolbar(tabCustomer)', function (obj) {
+      var checkStatus = table.checkStatus(obj.config.id);
+      switch (obj.event) {
+        case 'add':
+          layer.open({
+            type: 2 //此处以iframe举例
+            , title: '新增客户信息'
+            , area: ['450px', '500px']  //宽高
+            , shade: 0.5//阴影（0-1之间的数）
+            , maxmin: true//最大、最小化按钮
+            , offset: [ //设置窗口位置
+              ($(window).height() - 500) / 2
+              , ($(window).width() - 450) / 2
+            ]
+            , content: 'customer/add.html'
+          })
+          break;
+        case 'deletecheck':
+          //批量删除
+          if (checkStatus.data.length <= 0) {
+            layer.alert("请选择要删除的行");
+            return;
+          }
+          layer.confirm('确认要删除选中的这行吗？', function (index) {
+            var ids = []
+            for (var i = 0; i < checkStatus.data.length; i++) {
+              ids.push(checkStatus.data[i].cusNo)
+            }
+
+            $.ajax({
+              url: 'http://localhost:8080/customer/del',
+              type: 'POST',
+              dataType: 'JSON',
+              data: {
+                ids: ids.join(",")
+              },
+              success: function (obj) {
+                layer.msg(obj.msg);
+                table.reload('tabCustomer')
+              }
+            })
+
+            layer.close(index);
+          });
+          break;
+        case 'search':
+          //查询
+          table.reload('tabCustomer', {
+            where: {
+              cusName: $('#cusName').val(),
+              cusNo: $('#cusNo').val()
+            },
+            page: {
+              curr: 1 //重载过后再跳转到第一页
+            }
+          });
+          break;
+
+
+      }
+    })
+
+    //监听行事件
+    table.on('tool(tabCustomer)', function (obj) {
+      var layEvent = obj.event;
+      var data = obj.data;
+      switch (obj.event) {
+        case 'del':
+          row = data
+          layer.open({
+            type: 2 //此处以iframe举例
+            , title: '查阅'
+            , area: ['450px', '500px']  //宽高
+            , shade: 0.5//阴影（0-1之间的数）
+            , maxmin: true//最大、最小化按钮
+            , offset: [ //设置窗口位置
+              ($(window).height() - 500) / 2
+              , ($(window).width() - 450) / 2
+            ]
+            , content: 'customer/del.html'
+          })
+
+          break;
+        case 'edit':
+          row = data
+          layer.open({
+            type: 2 //此处以iframe举例
+            , title: '分配'
+            , area: ['450px', '500px']  //宽高
+            , shade: 0.5//阴影（0-1之间的数）
+            , maxmin: true//最大、最小化按钮
+            , offset: [ //设置窗口位置
+              ($(window).height() - 500) / 2
+              , ($(window).width() - 450) / 2
+            ]
+            , content: 'customer/fenpei.html'
+          })
+          //   row = data;
+          //   layer.open({
+          //     type: 2 //此处以iframe举例
+          //     , title: '修改客户信息'
+          //     , area: ['390px', '450px']
+          //     , shade: 0.5 //背景阴影0~1
+          //     , maxmin: true  //最大，最小化按钮
+          //     , offset: [ //为了演示，随机坐标
+          //       ($(window).height() - 450) / 2
+          //       , ($(window).width() - 390) / 2
+          //     ]
+          //     , content: 'customer/customerupdate.html'
+          //   });
+          break;
+        case 'deal':
+          layer.open({
+            type: 2 //此处以iframe举例
+            , title: '处理'
+            , area: ['450px', '500px']  //宽高
+            , shade: 0.5//阴影（0-1之间的数）
+            , maxmin: true//最大、最小化按钮
+            , offset: [ //设置窗口位置
+              ($(window).height() - 500) / 2
+              , ($(window).width() - 450) / 2
+            ]
+            , content: 'customer/deal.html'
+          }); break;
+        case 'spon':
+          layer.open({
+            type: 2 //此处以iframe举例
+            , title: '反馈'
+            , area: ['450px', '500px']  //宽高
+            , shade: 0.5//阴影（0-1之间的数）
+            , maxmin: true//最大、最小化按钮
+            , offset: [ //设置窗口位置
+              ($(window).height() - 500) / 2
+              , ($(window).width() - 450) / 2
+            ]
+            , content: 'customer/spon.html'
+          }); break;
+      };
+    });
+
+  });
+</script>

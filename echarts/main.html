@@ -1,0 +1,163 @@
+<div id="main1" style="width: 600px;height:400px; display: inline-block;"></div>
+<div id="main2" style="width: 600px;height:400px; display: inline-block;"></div>
+<div id="main3" style="width: 300px;height:300px;"></div>
+
+<script type="text/javascript">
+
+    ec1 = echarts.init(document.getElementById('main1'));
+
+    var showData = [0, 0, 0, 0, 0];
+    axios.get("http://localhost:8888/api/v1/asb")
+        .then(resp => {
+            console.log(resp);
+            var datas = resp.data.data;
+            var len = datas.length;
+            console.log(len)
+            for (var i = 0; i < len; i++) {
+                showData[datas[i].satisfaction - 1] += 1;
+            }
+
+            var option = {
+                title: {
+                    text: "满意度"
+                },
+                tooltip: {},
+                legend: {
+                    data: ["满意度分数"]
+                },
+                xAxis: {
+                    data: ["一星", "二星", "三星", "四星", "五星"],
+                    // axisLabel: {
+                    //     interval: 0,
+                    //     rotate: -30
+                    // }
+                },
+                yAxis: {},
+                series: [{
+                    name: "满意度分数",
+                    type: 'bar',
+                    data: showData,
+                }],
+                color: ['#33CC70', '#E6E61A', '#D56F2B']
+            }
+
+            ec1.setOption(option)
+
+        })
+        .catch(err => {
+            console.log("err")
+            console.log(err);
+        });
+</script>
+
+
+
+<script type="text/javascript">
+
+    ec2 = echarts.init(document.getElementById('main2'));
+    var labelData = {
+        "战略合作伙伴": 0,
+        "合作伙伴": 0,
+        "大客户": 0,
+        "重点开发客户": 0,
+        "普通客户": 0,
+        "VIP客户": 0,
+    }
+
+    axios.get("http://localhost:8888/api/v1/customers")
+        .then(resp => {
+            console.log(resp);
+            var datas = resp.data.data;
+            var len = datas.length;
+            console.log(len)
+            for (var i = 0; i < len; i++) {
+                labelData[datas[i].level] += 1;
+            }
+
+            var option = {
+                title: {
+                    text: "客户等级报表"
+                },
+                tooltip: {},
+                legend: {
+                    data: ["客户等级"]
+                },
+                xAxis: {
+                    data: Object.keys(labelData),
+                    axisLabel: {
+                        interval: 0,
+                        rotate: -30
+                    }
+                },
+                yAxis: {},
+                series: [{
+                    name: "客户等级",
+                    type: 'bar',
+                    data: Object.values(labelData),
+                }],
+                color: ['#E6E61A', '#33CC70', '#D56F2B']
+            }
+
+            ec2.setOption(option);
+        })
+        .catch(err => {
+            console.log("err")
+            console.log(err);
+        });
+</script>
+
+
+<script type="text/javascript">
+
+    var ec3 = echarts.init(document.getElementById('main3'));
+
+
+    // 绘制图表。
+    var labels1 = ["咨询", "投诉", "建议"];
+    var showData1 = [
+        { name: labels1[0], value: 0 },
+        { name: labels1[1], value: 0 },
+        { name: labels1[2], value: 0 },
+    ];
+    axios.get("http://localhost:8888/api/v1/services")
+        .then(resp => {
+            console.log(resp);
+            var datas = resp.data.data;
+            var len = datas.length;
+            console.log(len)
+            for (var i = 0; i < len; i++) {
+                showData1[datas[i].type].value += 1;
+            }
+            var option = {
+                title: {
+                    text: "本月服务报表",
+                    left: "center",
+                    top: 20
+                },
+                tooltip: {
+                    // trigger: 'item',
+                    // formatter: '{a} <br/>{b} : {c} ({d}%)'
+                },
+                series: {
+                    name: "服务类型",
+                    type: 'pie',
+                    data: showData1,
+                    radius: "50%",
+                    label: {
+                        normal: {
+                            show: true,
+                            textStyle: { fontSize: 20 },
+                        },
+                    },
+                },
+                // 绿色 黄色 橙色
+                color: ['#33CC70', '#E6E61A', '#D56F2B']
+
+            };
+            ec3.setOption(option)
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
+</script>
