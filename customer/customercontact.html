@@ -9,15 +9,15 @@
   </div>
   <script type="text/html" id="barContact">
 	<a class="layui-btn layui-btn-sm "  lay-event="add">新增</a>
-	<a class="layui-btn layui-btn-sm layui-btn-danger"  lay-event="deletecheck">批量删除</a>
+	<!-- <a class="layui-btn layui-btn-sm layui-btn-danger"  lay-event="deletecheck">批量删除</a> -->
   <div class="layui-input-inline" style="margin-left:200px">
 		<div class="layui-input-inline">
-		<input type="text" id="name" lay-verify="title" autocomplete="off" placeholder="联系人姓名" class="layui-input">
+		<!-- <input type="text" id="name" lay-verify="title" autocomplete="off" placeholder="联系人姓名" class="layui-input"> -->
 	  </div>
 	  <div class="layui-input-inline">
-	  <input type="text" id="id" lay-verify="title" autocomplete="off" placeholder="联系人编号" class="layui-input">
+	  <!-- <input type="text" id="id" lay-verify="title" autocomplete="off" placeholder="联系人编号" class="layui-input"> -->
 	  </div>
-	  <a class="layui-btn layui-btn-sm "  lay-event="search">查询</a>
+	  <!-- <a class="layui-btn layui-btn-sm "  lay-event="search">查询</a> -->
 	</div>
   </script>
   <script type="text/html" id="toolContact">
@@ -36,9 +36,9 @@
 	  table.render({
 		elem: '#tabContact'
 		// , height: 550
-		, url: 'customer/contact.json' //数据接口
+		, url: urlHead + '/api/v1/linkman/getLinkmans' //数据接口
 		// , method:'POST'           //传输数据方式
-		, page: true //开启分页
+		, page: false //开启分页
 		, toolbar: '#barContact'
 		, defaultToolbar: [] //去掉默认的工具栏按钮
 		, cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
@@ -47,15 +47,15 @@
 		, cols: [[ //表头
 		  { checkbox: true }
 		  , { field: 'id', title: '联系人编号', width: 120, sort: true, unresize: true }
-		  , { field: 'name', title: '联系人姓名',width: 120, unresize: true }
+		  , { field: 'name', title: '联系人姓名',width: 150, unresize: true }
 		  , { field: 'sex', title: '性别', width: 100, unresize: true }
 		  , { field: 'position', title: '职位', width: 150, unresize: true }
 		  , { field: 'telephone', title: '办公电话', width: 250, unresize: true } //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
 		  , { field: 'phone', title: '手机号', width: 150, unresize: true }
 		  , { field: 'comment', title: '备注信息', width: 150, unresize: true }
-		  , { field: 'operate', title: '操作', unresize: true, toolbar: '#toolContact', width: 120, fixed: 'right' }
+		  , { field: 'operate', title: '操作', unresize: true, toolbar: '#toolContact', width: 150, fixed: 'right' }
 		]]
-		, page: true
+		, page: false
 	  });
   
   
@@ -90,7 +90,7 @@
 			  }
   
 			  $.ajax({
-				url: 'http://localhost:8080/customer/deleContact',
+				url: urlHead + '/customer/deleContact',
 				type: 'POST',
 				dataType: 'JSON',
 				data: {
@@ -131,7 +131,7 @@
 			  var id;
 			  id = data.id;
 			  $.ajax({
-				url: 'http://localhost:8080/customer/deleContact',
+				url: urlHead + '/api/v1/linkman/deleteLinkeman?',
 				type: 'POST',
 				dataType: 'JSON',
 				data: { id: id },
@@ -140,7 +140,8 @@
 				  table.reload('tabContact')
 				}
 			  })
-  
+			//   var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+			// 				parent.layer.close(index); //再执行关闭   
 			  layer.close(index);
 			});
   
@@ -150,7 +151,7 @@
 			layer.open({
 			  type: 2 //此处以iframe举例
 			  , title: '修改联系人信息'
-			  , area: ['390px', '450px']
+			  , area: ['400px', '550px']
 			  , shade: 0.5 //背景阴影0~1
 			  , maxmin: true  //最大，最小化按钮
 			  , offset: [ //为了演示，随机坐标

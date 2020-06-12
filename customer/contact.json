@@ -3,13 +3,13 @@
 	"msg":"后台数据获取错误",
 	"count":7,
 	"data":[
-        {"id":1,"name":"聂宗海","sex":"男","position":"前台","telephone":"999-999-999","phone":"13365478541","comment":"暂无"},
-        {"id":2,"name":"聂宗海","sex":"男","position":"前台","telephone":"999-999-999","phone":"13365478541","comment":"暂无"},
-        {"id":3,"name":"聂宗海","sex":"男","position":"前台","telephone":"999-999-999","phone":"13365478541","comment":"暂无"},
-        {"id":4,"name":"聂宗海","sex":"男","position":"前台","telephone":"999-999-999","phone":"13365478541","comment":"暂无"},
-        {"id":5,"name":"聂宗海","sex":"男","position":"前台","telephone":"999-999-999","phone":"13365478541","comment":"暂无"},
-        {"id":6,"name":"聂宗海","sex":"男","position":"前台","telephone":"999-999-999","phone":"13365478541","comment":"暂无"},
-        {"id":7,"name":"聂宗海","sex":"男","position":"前台","telephone":"999-999-999","phone":"13365478541","comment":"暂无"}
+        {"id":1,"name":"聂宗海","sex":"男","position":"前台","telephone":"999-999-999","phone":"13365478541","comment":"已指派"},
+        {"id":2,"name":"聂宗海","sex":"男","position":"前台","telephone":"999-999-999","phone":"13365478541","comment":"已指派"},
+        {"id":3,"name":"聂宗海","sex":"男","position":"前台","telephone":"999-999-999","phone":"13365478541","comment":"已指派"},
+        {"id":4,"name":"聂宗海","sex":"男","position":"前台","telephone":"999-999-999","phone":"13365478541","comment":"已指派"},
+        {"id":5,"name":"聂宗海","sex":"男","position":"前台","telephone":"999-999-999","phone":"13365478541","comment":"已指派"},
+        {"id":6,"name":"聂宗海","sex":"男","position":"前台","telephone":"999-999-999","phone":"13365478541","comment":"已指派"},
+        {"id":7,"name":"聂宗海","sex":"男","position":"前台","telephone":"999-999-999","phone":"13365478541","comment":"已指派"}
 		
 		
 	]

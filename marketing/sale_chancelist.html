@@ -1,3 +1,4 @@
+<h1>销售机会表</h1>
 <div>
     <!-- 表格 -->
     <table id="tabSaleChance" lay-filter="tabSaleChance">
@@ -29,10 +30,10 @@
   </script>
 <!-- 表格行 -->
 <script type="text/html" id="toolSaleChance">
-    <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs " lay-event="detail">查看</a>
     {{# if (d.state =="1"){}}
-    <a class="layui-btn layui-btn-xs" lay-event="assgin">指派</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="assgin">指派</a>
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
           {{#}}}
     {{# if (d.state !="1"){}}
@@ -54,7 +55,7 @@
         table.render({
             elem: '#tabSaleChance'
             // , height: 550
-            , url: 'http://liuchengyin.qicp.vip/saleChance/' //数据接口
+            , url: urlHead+'/saleChance/' //数据接口
             // , method:'POST'           //传输数据方式
             , page: true //开启分页
             , toolbar: '#barSaleChance'
@@ -105,34 +106,7 @@
                         , content: 'marketing/sale_chanceadd.html'
                     })
                     break;
-                // case 'deletecheck':
-                //     //批量删除
-                //     if (checkStatus.data.length <= 0) {
-                //         layer.alert("请选择要删除的行");
-                //         return;
-                //     }
-                //     layer.confirm('确认要删除选中的这行吗？', function (index) {
-                //         var ids = []
-                //         for (var i = 0; i < checkStatus.data.length; i++) {
-                //             ids.push(checkStatus.data[i].cusNo)
-                //         }
-
-                //         $.ajax({
-                //             url: '',
-                //             type: 'POST',
-                //             dataType: 'JSON',
-                //             data: {
-                //                 ids: ids.join(",")
-                //             },
-                //             success: function (obj) {
-                //                 layer.msg(obj.msg);
-                //                 table.reload('tabSaleChance')
-                //             }
-                //         })
-
-                //         layer.close(index);
-                //     });
-                //     break;
+              
                 case 'search':
                     //查询
                     console.log($('#State').val())
@@ -161,7 +135,7 @@
                         var id;
                         id = data.id;
                         $.ajax({
-                            url: 'http://liuchengyin.qicp.vip/saleChance/deleteSaleChance',
+                            url: urlHead + '/saleChance/deleteSaleChance',
                             type: 'DELETE',
                             dataType: 'JSON',
                             data: { id: id },

@@ -88,6 +88,7 @@
     </form>
 
     <script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/urlHead.js" type="text/javascript" charset="utf-8"></script>
     <script src="/echarts/js/axios.js"></script>
     <script type="text/javascript">
         layui.use(['form', 'jquery'], function () {
@@ -120,7 +121,7 @@
             form.on('submit(btnSubmitUpdateSaleChance)', function (data) {
                 console.log(data.field)
                 $.ajax({
-                    url: 'http://liuchengyin.qicp.vip/saleChance/updateSaleChance',
+                    url: urlHead +'/saleChance/updateSaleChance',
                     type: 'PUT',
                     contentType:"application/json",
                     dataType: 'JSON',
@@ -128,35 +129,14 @@
                     success: function (obj) {
                         
                         //后台成功修改后的操作
+                        layer.msg(obj.msg);
                         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                         parent.layer.close(index); //再执行关闭   
                         parent.table.reload('tabSaleChance');
                     }
                 })
 
-                // console.log(data.field)
-
-                // axios.put("http://liuchengyin.qicp.vip/api/v1/serviceback", {
-                //     comment: "string",
-                //     "id": 1,
-                //     "satisfaction": 2,
-                //     "serviceid": 2,
-                //     "state": 0
-                // })
-                //     .then(resp => {
-                //         console.log(resp)
-                //     })
-                //     .catch(err => {
-                //         console.log(err)
-                //     })
-
-                // axios.put("http://liuchengyin.qicp.vip/saleChance/updateSaleChancer", data.field)
-                //     .then(resp => {
-                //         console.log(resp)
-                //     })
-                //     .catch(err => {
-                //         console.log(err)
-                //     })
+        
                 return false;
             })
 

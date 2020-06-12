@@ -1,3 +1,4 @@
+<h1>客户开发计划表</h1>
 <div>
     <!-- 表格 -->
     <table id="tabPlanList" lay-filter="tabPlanList">
@@ -40,7 +41,7 @@
         table.render({
             elem: '#tabPlanList'
             // , height: 550
-            , url: 'http://liuchengyin.qicp.vip/customerPlan/getCustomerPlans' //数据接口
+            , url: urlHead + '/customerPlan/getCustomerPlans' //数据接口
             // , method:'POST'           //传输数据方式
             , page: true //开启分页
             , toolbar: '#barPlanList'
@@ -86,7 +87,7 @@
             switch (obj.event) {
                 case 'detail':
                     $.ajax({
-                        url: 'http://liuchengyin.qicp.vip/customerPlan/getPlanByChanceId',
+                        url: urlHead + '/customerPlan/getPlanByChanceId',
                         type: 'GET',
                         dataType: 'JSON',
                         data: {chanceid:data.chanceid},
@@ -110,8 +111,6 @@
                             });
                         }
                     })
-
-
                     break;
                 case 'design':
                     row = data

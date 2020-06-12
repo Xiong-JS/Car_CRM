@@ -10,6 +10,9 @@
 <body style="padding: 10px;">
 	<!--lay-filter校验-->
 	<form class="layui-form" lay-filter='formAddCustomer' action="">
+
+		<input type="hidden" name="userid" />
+		<input type="hidden" name="tstate" />
 		<div class="layui-form-item">
 			<label class="layui-form-label">状态</label>
 			<div class="layui-input-block">
@@ -21,15 +24,16 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">处理人账户</label>
 			<div class="layui-input-block">
-				<input type="text" lay-verify="required" autocomplete="off" placeholder="处理人" class="layui-input" name="deal_userid">
+				<input type="text" lay-verify="required" autocomplete="off" placeholder="处理人" class="layui-input"
+					name="dealUserid">
 			</div>
 		</div>
 
 		<div class="layui-form-item">
 			<label class="layui-form-label">处理方法</label>
 			<div class="layui-input-block">
-				<textarea type="text" name="service_dispose" lay-verify="required" autocomplete="off"
-					placeholder="请输入内容" class="layui-textarea"></textarea>
+				<textarea type="text" lay-verify="required" autocomplete="off" name="serviceDispose" placeholder="请输入内容"
+					class="layui-textarea"></textarea>
 			</div>
 		</div>
 
@@ -44,20 +48,38 @@
 	</form>
 
 	<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/urlHead.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		layui.use(['form', 'jquery'], function () {
 			var form = layui.form
 			var $ = layui.jquery
 			form.render()
+			console.log(parent.row.id)
+			var id = parent.row.id;
+			form.val('formUpdateCustomer', {
+				"userid": parent.row.id,
+				"tstate": "3",
+				"dealUserid": parent.row.dealUserid,
+				"serviceDispose": parent.row.serviceDispose,
+			})
 			form.on('submit(btnSubmitAddCustomer)', function (data) {
+				console.log(data.field.id)
+				console.log(data.field)
 				if (form.verify()) {
 					$.ajax({
-						url: 'http://localhost:8080/customer/deal',
-						type: 'POST',
+						url: urlHead + '/api/v1/service',
+						type: 'PUT',
 						dataType: 'JSON',
-						data: data.field,
+						contentType: "application/json",
+						data: JSON.stringify({
+							"id": id,
+							"state": "3",
+							"dealUserid": data.field.dealUserid,
+							"serviceDispose": data.field.serviceDispose,
+						}),
 						success: function (obj) {
 							// debugger;
+							console.log(obj)
 							var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
 							parent.layer.close(index); //再执行关闭   
 							parent.table.reload('tabCustomer');

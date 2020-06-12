@@ -30,35 +30,35 @@
       <input type="text" id="cusName" lay-verify="title" autocomplete="off" placeholder="客户名称" class="layui-input">
     </div>
     <div class="layui-input-inline">
-    <input type="text" id="cusNo" lay-verify="title" autocomplete="off" placeholder="客户编号" class="layui-input">
+    <input type="text" id="customerId" lay-verify="title" autocomplete="off" placeholder="客户编号" class="layui-input">
     </div>
     <a class="layui-btn c "  lay-event="search">查询</a>
   </div>
 </script>
 <script type="text/html" id="toolCustomer">
 
-  {{# if (d.zt =="已分配" || d.zt =="已处理" || d.zt =="已归档"|| d.zt =="已反馈"){}}
+  {{# if (d.state == 1 || d.state == 2 || d.state == 3|| d.state =="已反馈"){}}
   <a class="layui-btn a layui-btn-disabled"  >分配</a>
   {{#}}}
 
-  {{# if (d.zt =="新创建"){}}
-  <a class="layui-btn a " lay-event="edit" >分配</a>
+  {{# if (d.state == 0){}}
+  <a class="layui-btn layui-btn-normal a " lay-event="edit" >分配</a>
   {{#}}}
 
-  {{# if (d.zt=="已处理" || d.zt =="已反馈" || d.zt =="已归档" ||d.zt=="新创建"){}}
+  {{# if (d.state== 2 || d.state == 3 ||d.state== 0){}}
   <a class="layui-btn  a layui-btn-disabled" >处理</a>
   {{#}}}
 
-  {{# if (d.zt =="已分配"){}}
-  <a class="layui-btn  a" lay-event="deal">处理</a>
+  {{# if (d.state == 1){}}
+  <a class="layui-btn layui-btn-warm a" lay-event="deal">处理</a>
   {{#}}}
 
-  {{# if ( d.zt == "已反馈"|| d.zt =="已归档" ||d.zt=="新创建"||d.zt =="已分配"){}}
+  {{# if (d.state ==3 ||d.state==0||d.state ==1){}}
   <a class="layui-btn b a layui-btn-disabled" >反馈</a>
   {{#}}}
 
-  {{# if (d.zt == "已处理"){}}
-  <a class="layui-btn b a" lay-event="spon">反馈</a>
+  {{# if (d.state == 2){}}
+  <a class="layui-btn layui-btn-danger b a" lay-event="spon">反馈</a>
   {{#}}} 
   
   <a class="layui-btn b a" lay-event="del">查看</a>
@@ -112,14 +112,14 @@
     table.render({
       elem: '#tabCustomer'
       // , height: 550
-      , url: 'http://liuchengyin.qicp.vip/api/v1/services' //数据接口
+      , url: urlHead + '/api/v1/service' //数据接口
       // , method:'POST'           //传输数据方式
       , page: true //开启分页
       , toolbar: '#barCustomer'
       , defaultToolbar: [] //去掉默认的工具栏按钮
       , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
       // , limits: [5, 10, 15, 20]
-      // , limit: 5
+      , limit: 10
       , cols: [[ //表头
 
         { field: 'id', title: '服务编号', width: 130, sort: true, unresize: true }
@@ -127,13 +127,23 @@
         , { field: 'telephone', title: '客户电话', unresize: true }
         , { field: 'serviceContent', title: '服务内容', width: 160, unresize: true }
         , { field: 'createTime', title: '创建时间', width: 150, unresize: true }
-        , { field: 'state', title: '状态', width: 160, unresize: true }
+        , {
+          field: 'state', title: '状态', width: 160, unresize: true, templet: function (item) {
+            switch (item.state) {
+              case 0: return '未分配';
+              case 1: return '已分配';
+              case 2: return '已处理';
+              case 3: return '已归档';
+         
+            }
+          }
+        }
         , {
           field: 'type', title: '服务类型', width: 210, unresize: true, templet: function (item) {
             switch (item.type) {
-              case '1': return '咨询';
-              case '3': return '建议';
-              case '2': return '投诉';
+              case 1: return '咨询';
+              case 3: return '建议';
+              case 2: return '投诉';
               default: return '无';
             }
           }, width: 100
@@ -159,7 +169,7 @@
               ($(window).height() - 500) / 2
               , ($(window).width() - 450) / 2
             ]
-            , content: 'customer/add.html'
+            , content: '../services/add.html'
           })
           break;
         case 'deletecheck':
@@ -175,7 +185,7 @@
             }
 
             $.ajax({
-              url: 'http://localhost:8080/customer/del',
+              url: urlHead + '/customer/del',
               type: 'POST',
               dataType: 'JSON',
               data: {
@@ -224,7 +234,7 @@
               ($(window).height() - 500) / 2
               , ($(window).width() - 450) / 2
             ]
-            , content: 'customer/del.html'
+            , content: '../services/del.html'
           })
 
           break;
@@ -240,7 +250,7 @@
               ($(window).height() - 500) / 2
               , ($(window).width() - 450) / 2
             ]
-            , content: 'customer/fenpei.html'
+            , content: '../services/fenpei.html'
           })
           //   row = data;
           //   layer.open({
@@ -257,6 +267,7 @@
           //   });
           break;
         case 'deal':
+          row = data;
           layer.open({
             type: 2 //此处以iframe举例
             , title: '处理'
@@ -267,9 +278,10 @@
               ($(window).height() - 500) / 2
               , ($(window).width() - 450) / 2
             ]
-            , content: 'customer/deal.html'
+            , content: '../services/deal.html'
           }); break;
         case 'spon':
+          row = data;
           layer.open({
             type: 2 //此处以iframe举例
             , title: '反馈'
@@ -280,7 +292,7 @@
               ($(window).height() - 500) / 2
               , ($(window).width() - 450) / 2
             ]
-            , content: 'customer/spon.html'
+            , content: '../services/spon.html'
           }); break;
       };
     });

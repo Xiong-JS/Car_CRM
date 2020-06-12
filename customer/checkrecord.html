@@ -12,9 +12,10 @@
 	<!--lay-filter校验-->
       <script type="text/html" id="toolCheckRecord">
         <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        <!-- <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a> -->
       </script>
       <script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+      <script src="../js/urlHead.js" type="text/javascript" charset="utf-8"></script>
       <script>
         var row = null
         var table = null  //定义全局变量方便修改操作时访问
@@ -25,7 +26,7 @@
       
           table.render({
           elem: '#tabCheckRecord'
-          , url: 'contactrecord.json' //数据接口
+          , url: urlHead + '/api/v1/contactRecord/getAllRecords' //数据接口
           // , method:'POST'           //传输数据方式
           , page: true //开启分页
           , toolbar: '#barCheckRecord'
@@ -59,7 +60,7 @@
                     var id;
                     id = data.cusNo;
                     $.ajax({
-                    url: 'http://localhost:8080/customer/deleContactRecord',
+                    url: urlHead + '/customer/deleContactRecord',
                     type: 'POST',
                     dataType: 'JSON',
                     data: { id: id },
@@ -85,7 +86,7 @@
                     ($(window).height() - 450) / 2
                     , ($(window).width() - 390) / 2
                     ]
-                    , content: 'customer/contactrecordupdate.html'
+                    , content: 'contactrecordupdate.html'
                 });
                 break;
             };

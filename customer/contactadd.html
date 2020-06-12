@@ -10,13 +10,13 @@
 <body style="padding: 10px;">
 	<!--lay-filter校验-->
 	<form class="layui-form" lay-filter='formAddContact' action="">
-		<div class="layui-form-item">
+		<!-- <div class="layui-form-item">
 			<label class="layui-form-label">联系人编号</label>
 			<div class="layui-input-block">
 				<input type="text" name="id" lay-verify="required" autocomplete="off" placeholder="请输入联系人编号"
 					class="layui-input">
 			</div>
-		</div>
+		</div> -->
 		<div class="layui-form-item">
 			<label class="layui-form-label">联系人姓名</label>
 			<div class="layui-input-block">
@@ -68,6 +68,13 @@
 			</div>
 		</div>
 		<div class="layui-form-item">
+			<label class="layui-form-label">客户id</label>
+			<div class="layui-input-block">
+                <input type="text" name="customerid" lay-verify="required" autocomplete="off" placeholder="请输入对接的客户id"
+                class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
 			<div class="layui-input-block">
 				<button type="submit" class="layui-btn" lay-submit="" lay-filter="btnSubmitAddContact">立即提交</button>
 				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
@@ -76,6 +83,7 @@
 	</form>
 
 	<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/urlHead.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		layui.use(['form', 'jquery'], function () {
 			var form = layui.form
@@ -84,7 +92,7 @@
 			form.on('submit(btnSubmitAddContact)', function (data) {
 				if (form.verify()) {
 					$.ajax({
-						url: 'http://localhost:8080/customer/addContact',
+						url: urlHead + '/api/v1/linkman/addLinkeman',
 						type: 'POST',
 						dataType: 'JSON',
 						data: data.field,

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>Signin Template for Bootstrap</title>
+	<!-- Bootstrap core CSS -->
+	<link href="asserts/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Custom styles for this template -->
+	<link href="asserts/css/signin.css" rel="stylesheet">
+</head>
+
+<body class="text-center">
+	<form class="form-signin" action="">
+		<img class="mb-4" src="asserts/img/bootstrap-solid.svg" alt="" width="72" height="72">
+		<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+		<label class="sr-only">Username</label>
+		<input type="text" class="form-control" id="username" placeholder="Username" required="" autofocus="">
+		<label class="sr-only">Password</label>
+		<input type="password" class="form-control" id="password" placeholder="Password" required="">
+		<div class="checkbox mb-3">
+			<label>
+				<input type="checkbox" value="remember-me"> Remember me
+			</label>
+		</div>
+		<button class="btn btn-lg btn-primary btn-block" id="submit">Sign in</button>
+		<p class="mt-5 mb-3 text-muted">© 2019-2020</p>
+		<a class="btn btn-sm">中文</a>
+		<a class="btn btn-sm">English</a>
+	</form>
+	<script src="layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/urlHead.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var submit = document.getElementById('submit')
+		submit.onclick = function () {
+			var username = document.getElementById('username').value;
+			var password = document.getElementById('password').value;
+			if (username == '123456' && password == '123456') {
+				location.href =  '/index.html';
+			}else{
+				alert('密码或用户名错误!')
+			}
+			return false
+		}
+
+	</script>
+
+</body>
+
+</html>

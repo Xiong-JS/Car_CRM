@@ -8,20 +8,21 @@
 </head>
 
 <body style="padding: 10px;">
-        <form class="layui-form" lay-filter='formUpdateReason' action="">
-        <div class="layui-form-item" id="lostReason">
-                    <label class="layui-form-label">流失原因</label>
-                    <div class="layui-input-block">
-                      <textarea name="lostReason"  class="layui-textarea"  lay-verify="required" placeholder="请输入流失原因"></textarea>
-                    </div>
-               </div>
-        
-        <div class="layui-form-item" id="comment">
-                    <label class="layui-form-label">备注</label>
-                    <div class="layui-input-block">
-                      <textarea name="comment"  class="layui-textarea" placeholder="请输入备注"></textarea>
-                    </div>
+    <form class="layui-form" lay-filter='formUpdateReason' action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">流失原因</label>
+            <div class="layui-input-block">
+                <textarea name="lostReason" id="lostReason" class="layui-textarea" lay-verify="required"
+                    placeholder="注：流失原因为必填项"></textarea>
             </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="comment" id="comment" class="layui-textarea" placeholder="注：备注可不填"></textarea>
+            </div>
+        </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button type="submit" class="layui-btn" lay-submit="" lay-filter="btnSubmitUpdate">立即提交</button>
@@ -31,32 +32,42 @@
     </form>
 
     <script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/urlHead.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
         layui.use(['form', 'jquery'], function () {
             var form = layui.form
             var $ = layui.jquery
+            var reason = document.getElementById('lostReason')
             form.render()
             form.val('formUpdateReason', {
-                "lostReason":parent.row.lostReason,
-                "comment":parent.row.comment
+                "id": parent.row.id,
+                "lostReason": parent.row.lostReason,
+                "comment": parent.row.comment
             })
 
-            	//表单提交事件
-			form.on('submit(btnSubmitUpdate)',function(data){
-				$.ajax({
-					url:'http://localhost:8080/customer/updateCustomer',
-					type:'POST',
-					dataType:'JSON',
-					data:data.field,
-					success:function(obj){
-						//后台成功修改后的操作
-						var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-						parent.layer.close(index); //再执行关闭   
-						parent.table.reload('tabWarn');
-					}
-				})
-				return false;
-			})
+            //表单提交事件
+            form.on('submit(btnSubmitUpdate)', function (data) {
+                data.field.lostReason = $('#lostReason').val()
+                console.log(reason.value)
+                $.ajax({
+                    url: urlHead +'/api/v1/warnLost/setReason',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify({
+
+                        id: parent.row.id,
+                        reason: data.field.lostReason
+                    }),
+                    success: function (obj) {
+                        //后台成功修改后的操作
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭   
+                        parent.table.reload('tabWarn');
+                    }
+                })
+                return false;
+            })
 
         })
 

@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+
 </head>
 
 <body style="padding: 10px;">
@@ -32,14 +33,17 @@
     </form>
 
     <script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/urlHead.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
         layui.use(['form', 'jquery'], function () {
             var form = layui.form
             var $ = layui.jquery
             var measure_history = document.getElementById('measure_history');
+            var measure_new=document.getElementById('measure_new');
+            var wid=parent.row.id;
             // console.log(parent.row)
 
-            if (!parent.row.measure && parent.row.measure === '') {
+            if(!parent.row.measure || parent.row.measure === null || parent.row.measure === '') {
                 console.log("true")
                 // measure_history.hidden = true
                 $("#measure_history_div").html("")
@@ -56,10 +60,13 @@
             	//表单提交事件
 			form.on('submit(btnSubmitMeasureNew)',function(data){
 				$.ajax({
-					url:'http://localhost:8080/customer/updateCustomer',
+					url:urlHead + '/api/v1/warnLost/updateMeasure',
 					type:'POST',
 					dataType:'JSON',
-					data:data.field,
+					data: {
+                        wid: wid,
+                        newStr: measure_new.value
+                    },
 					success:function(obj){
 						//后台成功修改后的操作
 						var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引

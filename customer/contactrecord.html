@@ -9,17 +9,17 @@
 </div>
 <script type="text/html" id="barContactRecord">
   <!-- <a class="layui-btn layui-btn-sm "  lay-event="add">新增</a> -->
-  <a class="layui-btn layui-btn-sm layui-btn-danger"  lay-event="deletecheck">批量删除</a>
+  <!-- <a class="layui-btn layui-btn-sm layui-btn-danger"  lay-event="deletecheck">批量删除</a> -->
 <div class="layui-input-inline" style="margin-left:200px">
     <div class="layui-input-inline">
-    <input type="text" id="cusNo" lay-verify="title" autocomplete="off" placeholder="客户编号" class="layui-input">
+    <!-- <input type="text" id="cusNo" lay-verify="title" autocomplete="off" placeholder="客户编号" class="layui-input"> -->
     </div>
-    <a class="layui-btn layui-btn-sm "  lay-event="search">查询</a>
+    <!-- <a class="layui-btn layui-btn-sm "  lay-event="search">查询</a> -->
   </div>
 </script>
 <script type="text/html" id="toolContactRecord">
   <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
-  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  <!-- <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a> -->
 </script>
 <script>
   var row = null
@@ -33,7 +33,7 @@
     table.render({
       elem: '#tabContactRecord'
       // , height: 550
-      , url: 'customer/contactrecord.json' //数据接口
+      , url: urlHead + '/api/v1/contactRecord/getAllRecords' //数据接口
       // , method:'POST'           //传输数据方式
       , page: true //开启分页
       , toolbar: '#barContactRecord'
@@ -45,12 +45,12 @@
         { checkbox: true }
         , { field: 'id', title: '记录编号', width: 100,sort: true, unresize: true }
         , { field: 'customerid', title: '客户编号', width: 100, unresize: true }
-        , { field: 'time', title: '事件日期', width: 150,  unresize: true }
-        , { field: 'place', title: '事件地点', unresize: true }
-        , { field: 'schema', title: '事件概要', width: 150, unresize: true }
-        , { field: 'detail', title: '详细信息', width: 250, unresize: true }
+        , { field: 'time', title: '事件日期', width: 200,  unresize: true }
+        , { field: 'place', title: '事件地点', width: 200,unresize: true }
+        , { field: 'schema', title: '事件概要', width: 200, unresize: true }
+        , { field: 'detail', title: '详细信息', width: 200, unresize: true }
         , { field: 'comment', title: '备注信息', width: 150, unresize: true } //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-        , { field: 'operate', title: '操作', unresize: true, toolbar: '#toolContactRecord', width: 120, fixed: 'right' }
+        , { field: 'operate', title: '操作', unresize: true, toolbar: '#toolContactRecord', width: 100, fixed: 'right' }
       ]]
       , page: true
     });
@@ -73,7 +73,7 @@
             }
 
             $.ajax({
-              url: 'http://localhost:8080/customer/deleContactRecord',
+              url: urlHead + '/customer/deleContactRecord',
               type: 'POST',
               dataType: 'JSON',
               data: {
@@ -114,7 +114,7 @@
             var id;
             id = data.cusNo;
             $.ajax({
-              url: 'http://localhost:8080/customer/deleContactRecord',
+              url: urlHead + '/customer/deleContactRecord',
               type: 'POST',
               dataType: 'JSON',
               data: { id: id },
@@ -133,11 +133,11 @@
           layer.open({
             type: 2 //此处以iframe举例
             , title: '修改客户交往记录'
-            , area: ['390px', '450px']
+            , area: ['550px', '580px']
             , shade: 0.5 //背景阴影0~1
             , maxmin: true  //最大，最小化按钮
             , offset: [ //为了演示，随机坐标
-              ($(window).height() - 450) / 2
+              ($(window).height() - 550) / 2
               , ($(window).width() - 390) / 2
             ]
             , content: 'customer/contactrecordupdate.html'

@@ -8,27 +8,27 @@
 
 </div>
 <script type="text/html" id="barCustomer">
-  <a class="layui-btn layui-btn-sm "  lay-event="add">新增</a>
-  <a class="layui-btn layui-btn-sm layui-btn-danger"  lay-event="deletecheck">批量删除</a>
+  <!-- <a class="layui-btn layui-btn-sm "  lay-event="add">新增</a> -->
+  <!-- <a class="layui-btn layui-btn-sm layui-btn-danger"  lay-event="deletecheck">批量删除</a> -->
 <div class="layui-input-inline" style="margin-left:200px">
       <div class="layui-input-inline">
-      <input type="text" id="cusName" lay-verify="title" autocomplete="off" placeholder="客户名称" class="layui-input">
+      <!-- <input type="text" id="cusName" lay-verify="title" autocomplete="off" placeholder="客户名称" class="layui-input"> -->
     </div>
     <div class="layui-input-inline">
-    <input type="text" id="cusNo" lay-verify="title" autocomplete="off" placeholder="客户编号" class="layui-input">
+    <!-- <input type="text" id="cusNo" lay-verify="title" autocomplete="off" placeholder="客户编号" class="layui-input"> -->
     </div>
-    <a class="layui-btn layui-btn-sm "  lay-event="search">查询</a>
+    <!-- <a class="layui-btn layui-btn-sm "  lay-event="search">查询</a> -->
   </div>
 </script>
 <script type="text/html" id="tactCustomer">
-  <a class="layui-btn layui-btn-xs" lay-event="checkCon">查看联系人</a>
+  <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="checkCon">查看联系人</a>
 </script>
 <script type="text/html" id="recordCustomer">
   <a class="layui-btn layui-btn-xs" lay-event="checkRec">查看记录</a>
 </script>
 <script type="text/html" id="toolCustomer">
-  <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
-  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="edit">修改</a>
+  <!-- <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a> -->
 </script>
 <script>
   var row = null
@@ -42,9 +42,9 @@
     table.render({
       elem: '#tabCustomer'
       // , height: 550
-      , url: 'customer/demo.json' //数据接口
+      , url: urlHead + '/api/v1/customers' //数据接口
       // , method:'POST'           //传输数据方式
-      , page: true //开启分页
+      , page: false //开启分页
       , toolbar: '#barCustomer'
       , defaultToolbar: [] //去掉默认的工具栏按钮
       , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
@@ -53,10 +53,10 @@
       , cols: [[ //表头
         { checkbox: true }
         , { field: 'id', title: '客户编号', width: 120, sort: true, unresize: true }
-        , { field: 'name', title: '客户名称',width: 120, unresize: true }
-        , { field: 'sex', title: '客户性别', width: 100, unresize: true }
+        , { field: 'name', title: '客户名称',width: 110, unresize: true }
+        , { field: 'sex', title: '性别', width: 80, unresize: true }
         , { field: 'addr', title: '客户地址', width: 250, unresize: true }
-        , { field: 'telephone', title: '客户电话', width: 200, unresize: true } //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+        , { field: 'telephone', title: '客户电话', width: 130, unresize: true } //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
         , { 
           field: 'level', title: '客户等级', width: 200, unresize: true, templet: function (item) { 
             switch (item.level) {
@@ -81,9 +81,8 @@
         }
         , { field: 'cusContact', title: '客户联系人', width: 100, unresize: true, toolbar: '#tactCustomer' }
         , { field: 'cusRecord', title: '客户交往记录', width: 120, unresize: true, toolbar: '#recordCustomer' }
-        , { field: 'operate', title: '操作', unresize: true, toolbar: '#toolCustomer', width: 120, fixed: 'right' }
+        , { field: 'operate', title: '操作', unresize: true, toolbar: '#toolCustomer', width: 90, fixed: 'right' }
       ]]
-      , page: true
     });
 
 
@@ -118,7 +117,7 @@
             }
 
             $.ajax({
-              url: 'http://localhost:8080/customer/deleCustomers',
+              url: urlHead + '/customer/deleCustomers',
               type: 'POST',
               dataType: 'JSON',
               data: {
@@ -159,7 +158,7 @@
             var id;
             id = data.id;
             $.ajax({
-              url: 'http://localhost:8080/customer/deleCustomer',
+              url: urlHead + '/customer/deleCustomer',
               type: 'POST',
               dataType: 'JSON',
               data: { id: id },
@@ -181,7 +180,7 @@
             layer.open({
             type: 2 //此处以iframe举例
             , title: '修改客户信息'
-            , area: ['390px', '450px']
+            , area: ['400px', '550px']
             , shade: 0.5 //背景阴影0~1
             , maxmin: true  //最大，最小化按钮
             , offset: [ //为了演示，随机坐标
@@ -202,13 +201,13 @@
             //向后台传入参数（参数为客户的id），根据客户id查询该客户的联系人并返回页面
             var id;
             id = data.id;
-            $.ajax({
-              url: 'http://localhost:8080/customer/checkcontact',
-              type: 'POST',
-              dataType: 'JSON',
-              data: { id: id },
-              success: function (obj) {
-                layer.msg(obj.msg);
+            // $.ajax({
+            //   url: 'http://nibilx.free.idcfengye.com/api/v1/linkman/getLinkMans?id=1',
+            //   type: 'POST',
+            //   dataType: 'JSON',
+            //   data: { id: id },
+            //   success: function (obj) {
+            //     layer.msg(obj.msg);
                 layer.open({
                 type: 2 //此处以iframe举例
                 , title: '客户联系人'
@@ -216,18 +215,21 @@
                 , shade: 0.5//阴影（0-1之间的数）
                 , maxmin: true//最大、最小化按钮
                 , offset: [ //设置窗口位置
-                ($(window).height() - 600) / 2
+                  ($(window).height() - 600) / 2
                 , ($(window).width() - 750) / 2
                 ]
                 , content: 'customer/checkcontact.html'
                 
                });
-               table.reload('tabCheckContact')//重新加载客户的联系人信息
+                // var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                // layer.close(index);
+                // table.reload('tabCheckContact')//重新加载客户的联系人信息
               }
-            })
-            layer.close(index);
+            // })
+      
+            
         
-          }
+          
           
           break;
 
@@ -239,13 +241,13 @@
             //向后台传入参数（参数为客户的id），根据客户id查询该客户的交往记录并传送到到contactrecord.html页面
             var id;
             id = data.id;
-            $.ajax({
-              url: 'http://localhost:8080/customer/checkrecord',
-              type: 'POST',
-              dataType: 'JSON',
-              data: { id: id },
-              success: function (obj) {
-              layer.msg(obj.msg);
+            // $.ajax({
+            //   url: 'http://localhost:8080/customer/checkrecord',
+            //   type: 'POST',
+            //   dataType: 'JSON',
+            //   data: { id: id },
+            //   success: function (obj) {
+            //   layer.msg(obj.msg);
               layer.open({
                 type: 2 //此处以iframe举例
                 , title: '客户来往记录'
@@ -258,10 +260,10 @@
                 ]
                 , content: 'customer/checkrecord.html'
                });
-               table.reload('tabCheckRecord')//重新加载客户的来往记录信息
-              }
-            })
-            layer.close(index);
+              //  table.reload('tabCheckRecord')//重新加载客户的来往记录信息
+              // }
+            // })
+            // layer.close(index);
           }
           
           break;

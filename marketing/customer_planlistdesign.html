@@ -46,6 +46,7 @@
     </form>
 
     <script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/urlHead.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
         layui.use(['form', 'jquery'], function () {
             var form = layui.form
@@ -61,13 +62,14 @@
             form.on('submit(btnSubmitAddPlanList)', function (data) {
                 console.log(data.field)
                 $.ajax({
-                    url: 'http://liuchengyin.qicp.vip/customerPlan/makePlan',
+                    url: urlHead + '/customerPlan/makePlan',
                     type: 'POST',
                     dataType: 'JSON',
                     contentType: "application/json",
                     data: JSON.stringify(data.field),
                     success: function (obj) {
                         //后台成功修改后的操作
+                        layer.msg(obj.msg);
                         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                         parent.layer.close(index); //再执行关闭   
                         parent.table.reload('tabPlanList');

@@ -113,6 +113,7 @@
         </div>
     </form>
     <script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/urlHead.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
         layui.use(['form', 'jquery'], function () {
             var form = layui.form
@@ -122,7 +123,7 @@
                 if (form.verify()) {
                     console.log(data)
                     $.ajax({
-                        url: 'http://liuchengyin.qicp.vip/saleChance/addSaleChance',
+                        url: urlHead + '/saleChance/addSaleChance',
                         type: 'POST',
                         dataType: 'JSON',
                         contentType:"application/json",

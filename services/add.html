@@ -14,32 +14,29 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">客户编号</label>
 			<div class="layui-input-block">
-				<input type="text" name="customer_id" lay-verify="required" autocomplete="off" placeholder="请输入客户编号"
+				<input type="text" name="customerId" lay-verify="required" autocomplete="off" placeholder="请输入客户编号"
 					class="layui-input">
 			</div>
 		</div>
-		
+
 		<div class="layui-form-item">
 			<label class="layui-form-label">服务类型</label>
 			<div class="layui-input-block">
 				<select name="type" lay-verify="required">
 					<option value=""></option>
-					<option value="一级">咨询</option>
-					<option value="二级">建议</option>
-					<option value="三级">投诉</option>
+					<option value="0">咨询</option>
+					<option value="2">建议</option>
+					<option value="1">投诉</option>
 				</select>
 			</div>
 		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label">服务内容</label>
 			<div class="layui-input-block">
-
-				<textarea type="text" name="service_content" lay-verify="required" autocomplete="off" placeholder="请输入内容"
+				<textarea type="text" name="serviceContent" lay-verify="required" autocomplete="off" placeholder="请输入内容"
 					class="layui-textarea"></textarea>
 			</div>
 		</div>
-		
-
 		<div class="layui-form-item">
 			<div class="layui-input-block">
 				<button type="submit" class="layui-btn" lay-submit="" lay-filter="btnSubmitAddCustomer">立即提交</button>
@@ -49,18 +46,21 @@
 	</form>
 
 	<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/urlHead.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		layui.use(['form', 'jquery'], function () {
 			var form = layui.form
 			var $ = layui.jquery
 			form.render()
 			form.on('submit(btnSubmitAddCustomer)', function (data) {
+				console.log(data);
 				if (form.verify()) {
 					$.ajax({
-						url: 'http://localhost:8080/customer/add',
+						url: urlHead + '/api/v1/service',
 						type: 'POST',
 						dataType: 'JSON',
-						data: data.field,
+						data: JSON.stringify(data.field),
+						contentType: "application/json",
 						success: function (obj) {
 							// debugger;
 							var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引

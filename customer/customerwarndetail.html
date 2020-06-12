@@ -37,8 +37,8 @@
 			  <label class="layui-form-label">客户状态</label>
 			  <div class="layui-input-block">
 				<select  readonly="readonly" name="state" >
-				  <option value="正常">正常</option>
-				  <option value="已流失">已流失</option>
+				  <option value="1">正常</option>
+				  <option value="0">已流失</option>
 				</select>
 			  </div>
             </div>
@@ -65,12 +65,13 @@
 	</form>
 
 	<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/urlHead.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		layui.use(['form','jquery'], function () {
 			var form = layui.form
 			var $ = layui.jquery
 			var lostReason = document.getElementById('lostReason');
-			if(parent.row.state == 0){
+			if(parent.row.measure !=null){
 				lostReason.hidden = false
 			}else{
 				lostReason.hidden = true
